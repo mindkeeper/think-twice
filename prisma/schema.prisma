@@ -13,3 +13,115 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum VoteTypes {
+  BUY
+  SKIP
+
+  @@map("vote_types")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String?
+  name      String?
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  posts    Post[]
+  votes    Vote[]
+  comments Comment[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id String @id @default(cuid())
+  userId String
+  expires DateTime
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+
+
+}
+
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique @map("slug")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  posts Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id         String   @id @default(cuid())
+  title      String
+  price      Decimal
+  buyReason  String?  @map("buy_reason")
+  skipReason String?  @map("skip_reason")
+  imageUrl   String   @map("image_url")
+  userId     String   @map("user_id")
+  categoryId String   @map("category_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+  votes    Vote[]
+  comments Comment[]
+
+  // Indexes
+  @@index([userId], map: "idx_posts_user_id")
+  @@index([categoryId], map: "idx_posts_category_id")
+  @@index([createdAt], map: "idx_posts_created_at")
+  @@map("posts")
+}
+
+model Vote {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  postId    String    @map("post_id")
+  type      VoteTypes
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  // Unique constraint
+  @@unique([userId, postId], map: "unique_user_post_vote")
+  // Indexes
+  @@index([postId], map: "idx_votes_post_id")
+  @@index([userId], map: "idx_votes_user_id")
+  @@map("votes")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  postId    String   @map("post_id")
+  comment   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  // Indexes
+  @@index([postId], map: "idx_comments_post_id")
+  @@index([userId], map: "idx_comments_user_id")
+  @@map("comments")
+}
