@@ -12,8 +12,8 @@ import { validatepasswordPattern } from "../utils";
 export async function signUpAction(_prevState, formData) {
   const email = formData.get("email");
   const password = formData.get("password");
+  const name = formData.get("name");
   const cookieStore = await cookies();
-
   const isPasswordPatternValid = validatepasswordPattern(password);
   if (!isPasswordPatternValid) {
     return {
@@ -30,6 +30,7 @@ export async function signUpAction(_prevState, formData) {
 
     const user = await prisma.user.create({
       data: {
+        name,
         email,
         password: hashedPassword,
       },
