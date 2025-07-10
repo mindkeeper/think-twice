@@ -20,7 +20,7 @@ export const TabSwitcher = () => {
           onClick={() => setActiveTab("wishlist")}
           className={`w-1/2 transition ${
             activeTab === "wishlist"
-              ? "font-bold text-black text-sm"
+              ? "font-bold text-zinc-600 text-sm"
               : "text-sm text-zinc-500 hover:font-bold"
           }`}
         >
@@ -30,7 +30,7 @@ export const TabSwitcher = () => {
           onClick={() => setActiveTab("bookmark")}
           className={`w-1/2 transition ${
             activeTab === "bookmark"
-              ? "font-bold text-black text-sm"
+              ? "font-bold text-zinc-600 text-sm"
               : "text-sm text-zinc-500 hover:font-bold"
           }`}
         >
