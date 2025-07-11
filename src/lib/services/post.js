@@ -39,5 +39,16 @@ export async function getPostById(postId) {
       votes: true,
     },
   });
+  if (post && post.price) {
+    post.price = post.price.toString();
+  }
   return post;
+}
+
+export async function getPostCountByUserId(userId) {
+  return await prisma.post.count({
+    where: {
+      userId,
+    },
+  });
 }

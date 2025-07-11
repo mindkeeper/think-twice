@@ -13,7 +13,7 @@ export async function getUserByEmail(email) {
 }
 
 export async function getUserById(id) {
-  const user = await prisma.user.findUnique({
+  const post = await prisma.user.findUnique({
     where: { id },
     select: {
       id: true,
@@ -23,5 +23,5 @@ export async function getUserById(id) {
       avatarUrl: true,
     },
   });
-  return user;
+  return post;
 }

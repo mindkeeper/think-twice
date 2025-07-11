@@ -1,13 +1,16 @@
 import Image from "next/image";
-import { TabSwitcher } from "../../../../components/ui/tabSwitcher";
-import { getUserById } from "@/lib/services/user";
+import { TabSwitcher } from "../../../components/ui/tabSwitcher";
 import { CalendarClock, WandSparkles } from "lucide-react";
 import EditProfileModal from "./components/editProfileModal";
 import WishlistForm from "./components/wishlistForm";
+import { getSession } from "@/lib/services/session";
+import { getPostCountByUserId } from "@/lib/services/post";
 
-export default async function Profile({ params }) {
-  const { id } = await params;
-  const user = await getUserById(id);
+export default async function Profile() {
+  const session = await getSession();
+  const user = session?.user;
+
+  const postCount = await getPostCountByUserId(user.id);
 
   const avatarUrl =
     user?.avatarUrl?.trim() && user.avatarUrl.trim().length > 0
@@ -45,7 +48,7 @@ export default async function Profile({ params }) {
 
         <div className="flex items-center gap-1 py-2 text-xs text-zinc-500 font-bold">
           <WandSparkles className="w-4 h-4" />
-          Wishlist : {user.posts.length} items
+          Wishlist : {postCount} items
         </div>
       </div>
 

@@ -75,7 +75,7 @@ export default async function UserPost({ params }) {
           <div className="relative w-70 h-70 rounded-lg overflow-hidden shadow-md border">
             <Image
               className="object-cover"
-              src={post.imageUrl}
+              src="/images/example-img.jpg"
               alt="produk"
               fill
             />
