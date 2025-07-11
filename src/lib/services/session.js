@@ -25,6 +25,8 @@ export async function getSession() {
           id: true,
           email: true,
           name: true,
+          createdAt: true,
+          avatarUrl: true,
         },
       },
     },
