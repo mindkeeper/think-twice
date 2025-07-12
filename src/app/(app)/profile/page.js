@@ -11,12 +11,10 @@ export default async function Profile() {
   const user = session?.user;
 
   const postCount = await getPostCountByUserId(user.id);
+  console.log(user, "User Data");
 
-  const avatarUrl =
-    user?.avatarUrl?.trim() && user.avatarUrl.trim().length > 0
-      ? user.avatarUrl.trim()
-      : "/images/default-avatar.jpg";
-
+  const avatarFallback = "/images/default-avatar.jpg";
+  const avatarUrl = user?.avatarUrl || avatarFallback;
   return (
     <main className="min-h-screen">
       <div className="relative h-40 bg-gradient-to-br from-amber-100 to-lime-300">
