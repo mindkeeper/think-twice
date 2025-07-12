@@ -8,6 +8,9 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 export async function editProfileAction(_prevState, formData) {
   const id = formData.get("id");
   const name = formData.get("name");
+  if (!name?.trim()) {
+    return { error: "Name is required." };
+  }
   try {
     await prisma.user.update({
       where: { id },
