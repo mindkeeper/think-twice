@@ -11,7 +11,6 @@ export default async function Profile() {
   const user = session?.user;
 
   const postCount = await getPostCountByUserId(user.id);
-  console.log(user, "User Data");
 
   const avatarFallback = "/images/default-avatar.jpg";
   const avatarUrl = user?.avatarUrl || avatarFallback;

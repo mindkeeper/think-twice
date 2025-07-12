@@ -39,7 +39,7 @@ export async function uploadAvatarAction(_prevState, formData) {
   }
 
   const folder = "avatars";
-  const key = file.name;
+  const key = userId;
   const buffer = Buffer.from(await file.arrayBuffer());
   const path = `https://pub-02b4d765ea5d471c9521c79568970f8e.r2.dev/think-twice/avatars/${key}`;
 
