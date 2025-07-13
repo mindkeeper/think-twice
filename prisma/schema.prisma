@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -12,4 +6,99 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String?
+  name      String?
+  avatarUrl String?   @map("avatar_url")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  Session   Session[]
+  comments  Comment[]
+  posts     Post[]
+  votes     Vote[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique @map("slug")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  posts     Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id         String    @id @default(cuid())
+  title      String
+  price      Decimal
+  buyReason  String?   @map("buy_reason")
+  skipReason String?   @map("skip_reason")
+  imageUrl   String    @map("image_url")
+  userId     String    @map("user_id")
+  categoryId String    @map("category_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  comments   Comment[]
+  category   Category  @relation(fields: [categoryId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+  votes      Vote[]
+
+  @@index([userId], map: "idx_posts_user_id")
+  @@index([categoryId], map: "idx_posts_category_id")
+  @@index([createdAt], map: "idx_posts_created_at")
+  @@map("posts")
+}
+
+model Vote {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  postId    String    @map("post_id")
+  type      VoteTypes
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  post      Post      @relation(fields: [postId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, postId], map: "unique_user_post_vote")
+  @@index([postId], map: "idx_votes_post_id")
+  @@index([userId], map: "idx_votes_user_id")
+  @@map("votes")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  postId    String   @map("post_id")
+  comment   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([postId], map: "idx_comments_post_id")
+  @@index([userId], map: "idx_comments_user_id")
+  @@map("comments")
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expires   DateTime
+  createdAt DateTime @default(now())
+  users     User     @relation(fields: [userId], references: [id])
+}
+
+enum VoteTypes {
+  BUY
+  SKIP
+
+  @@map("vote_types")
 }
