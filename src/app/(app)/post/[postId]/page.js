@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getPostById } from "@/lib/services/post";
 import Link from "next/link";
+import CommentsDrawer from "../components/commentsDrawer";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
@@ -129,9 +130,16 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-zinc-500 py-1 mt-4">
-          <LucideMessageCircle className="h-4 w-4" />
-          {post.comments.length} comments
+        <div className="flex items-center gap-2 text-xs text-zinc-500 py-1 mt-4 ">
+          <CommentsDrawer
+            postId={post.id}
+            trigger={
+              <button className="flex items-center gap-1 text-xs text-zinc-500 hover:underline">
+                <LucideMessageCircle className="h-4 w-4" />
+                {post.comments.length} comments
+              </button>
+            }
+          />
         </div>
         <div className="mt-1 mb-4 w-[280px] h-[1px] bg-zinc-300 rounded" />
       </div>

@@ -52,3 +52,11 @@ export async function getPostCountByUserId(userId) {
     },
   });
 }
+
+export async function getPostCountByPostId(postId) {
+  return await prisma.post.count({
+    where: {
+      postId,
+    },
+  });
+}
