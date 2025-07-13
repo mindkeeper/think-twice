@@ -41,7 +41,7 @@ export default async function CommentsDrawer({ trigger, postId }) {
         </div>
         <Separator />
 
-        <div className="flex-1 overflow-y-auto mt-2 space-y-4 px-4">
+        <div className="flex-1 overflow-y-auto mt-2 space-y-5 px-4">
           {comments.map((comment) => (
             <div key={comment.id} className="flex items-start gap-3">
               <div className="relative w-8 h-8 flex-shrink-0">
