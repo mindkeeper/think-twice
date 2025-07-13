@@ -8,13 +8,13 @@ export async function votePost(_prevState, formData) {
   const userId = formData.get("userId");
 
   try {
-    const vote = await prisma.vote.findFirst({
+    const existingVote = await prisma.vote.findFirst({
       where: {
         postId,
         userId,
       },
     });
-    if (vote) {
+    if (existingVote) {
       return {
         error: "You have already voted on this post.",
       };
@@ -34,4 +34,7 @@ export async function votePost(_prevState, formData) {
   }
 
   revalidatePath("/post");
+  return {
+    success: true,
+  };
 }

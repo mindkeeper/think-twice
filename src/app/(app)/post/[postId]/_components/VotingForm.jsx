@@ -6,16 +6,21 @@ import { useActionState, useEffect } from "react";
 
 const INITIAL_STATE = {
   error: "",
+  success: false,
 };
 
 export function VotingForm({ postId, userId }) {
   const [state, action, pending] = useActionState(votePost, INITIAL_STATE);
 
   useEffect(() => {
+    // TODO: handle error and success using sonner
     if (state?.error) {
       alert(state.error);
     }
-  }, [state?.error]);
+    if (state?.success) {
+      alert("Vote submitted successfully!");
+    }
+  }, [state]);
 
   return (
     <div className="flex flex-col items-center mt-4">
