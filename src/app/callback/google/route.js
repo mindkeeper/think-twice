@@ -25,7 +25,6 @@ export async function GET(request) {
       }
     );
     const userInfo = await response.json();
-    console.log(userInfo);
 
     const existingUser = await getUserByEmail(userInfo.email);
     if (existingUser) {

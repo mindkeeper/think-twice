@@ -1,56 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { editProfileAction } from "../action";
 import toast from "react-hot-toast";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+const INITIAL_STATE = {
+  error: "",
+  success: null,
+};
 
 export default function EditProfileForm({ user, closeDialog }) {
   if (!user) return null;
 
-  const [formData, setFormData] = useState(() => ({
-    name: user.name,
-    avatarUrl: user.avatarUrl || "",
-  }));
+  const [state, action, pending] = useActionState(
+    editProfileAction,
+    INITIAL_STATE
+  );
 
-  const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const updatedProfile = await editProfileAction(user.id, formData);
-      toast.success("Profile edited successfully");
-      console.log("Updated:", updatedProfile);
-      if (closeDialog) closeDialog();
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to edit profile");
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("Profile updated successfully!");
+      closeDialog();
     }
-  };
+  }, [state]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 py-2">
-          Name
-        </label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          className="w-full border border-zinc-300 rounded p-2"
-        />
+    <form action={action} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input type="text" name="name" defaultValue={user?.name} />
+        {state?.error && <p className="text-red-500 text-sm">{state.error}</p>}
       </div>
-
+      <Input type="hidden" name="id" defaultValue={user?.id} />
       <div className="flex justify-end gap-2">
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2 text-sm rounded hover:opacity-90"
-        >
+        <Button type="submit" disabled={pending}>
           Save
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -1,12 +1,9 @@
 import { getSession } from "@/lib/services/session";
 
 export default async function AppLayout({ children }) {
-  const session = await getSession();
+  await getSession();
   return (
-    <div className="flex-1 relative min-h-screen">
-      <header className="w-full bg-neutral-200 p-8 flex">
-        <div className="text-lg">{session.user.email}</div>
-      </header>
+    <div className="flex-1 relative min-h-screen w-full max-w-lg mx-auto">
       <main>{children}</main>
     </div>
   );
