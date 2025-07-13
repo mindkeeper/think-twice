@@ -19,23 +19,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getPostById } from "@/lib/services/post";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
+import { getSession } from "@/lib/services/session";
+import BackButton from "@/components/BackButton";
+import { IMAGE_FALLBACK_URL } from "@/constant";
+import { VotingForm } from "./_components/VotingForm";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
-  const post = await getPostById(postId);
 
+  const session = await getSession();
+  const user = session?.user;
+  const post = await getPostById(postId);
+  const ownedPost = user.id === post.user.id;
+
+  const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
     <main className="min-h-screen ">
-      <div className="flex justify-center items-center p-2">
+      <div className="flex justify-between items-center py-2">
+        <BackButton />
         <div className="text-sm font-bold">Post</div>
+        <div className="w-12"></div>
       </div>
-      <div className="card flex flex-col justify-center items-center shadow-md border mx-4 rounded-md max-w-md mx-auto">
+      <div className="card flex flex-col justify-center items-center shadow-md border rounded-md w-full mx-auto">
         <div className="flex justify-between items-center w-full px-4 py-1">
           <div className="flex items-center gap-2 mt-2">
             <div className="relative w-8 h-8">
               <Image
                 className="rounded-full border-4 border-white shadow-md"
-                src="/images/default-avatar.jpg"
+                src={avatarUrl}
                 alt="profile"
                 fill
               />
@@ -53,20 +65,28 @@ export default async function UserPost({ params }) {
               <Ellipsis className="w-4 h-4 text-zinc-600" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {ownedPost && (
+                <>
+                  <DropdownMenuItem>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
               <DropdownMenuItem>
                 <Bookmark className="mr-2 h-4 w-4" />
                 Bookmark
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
+              {ownedPost && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -86,12 +106,7 @@ export default async function UserPost({ params }) {
           <div className="font-bold text-sm py-2">{post.title}</div>
           <div className="flex items-center gap-x-2 text-xs py-2">
             <Wallet className="h-4 w-4" />
-            {post.price?.toNumber().toLocaleString("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            })}
+            {formatPrice(post?.price)}
           </div>
           <div className="flex items-center gap-x-2 text-xs py-2">
             <Tags className="h-4 w-4" />
@@ -115,19 +130,7 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        <div className="flex flex-col items-center mt-4">
-          <div className="text-xs text-zinc-500 py-2">
-            So, what do you think?
-          </div>
-          <div className="flex justify-center items-center gap-x-2 py-2">
-            <button className="bg-lime-400 hover:bg-lime-700 rounded-lg font-bold p-2 w-25 text-sm shadow-md">
-              BUY
-            </button>
-            <button className="bg-red-500 hover:bg-red-700 rounded-lg font-bold p-2 w-25 text-sm shadow-md">
-              BYE
-            </button>
-          </div>
-        </div>
+        {!ownedPost && <VotingForm postId={post.id} userId={user.id} />}
 
         <div className="flex items-center gap-2 text-xs text-zinc-500 py-1 mt-4">
           <LucideMessageCircle className="h-4 w-4" />
