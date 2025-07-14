@@ -8,10 +8,15 @@ export async function editPostAction(_prevState, formData) {
   const postId = formData.get("postId");
   const title = formData.get("title");
   const price = formData.get("price");
-  const buyReason = formData.get("buyReason");
-  const skipReason = formData.get("skipReason");
+  const buyReason = formData.get("buyReason") || "";
+  const skipReason = formData.get("skipReason") || "";
   const category = formData.get("category");
   const image = formData.get("image");
+  if (!title || !price || !category) {
+    return {
+      error: "Title, price, and category are required.",
+    };
+  }
 
   const isUploadedImage = image?.type?.startsWith("image/");
   let imageUrl = null;
@@ -37,20 +42,6 @@ export async function editPostAction(_prevState, formData) {
   }
 
   const parsedPrice = price ? parseFloat(price) : null;
-  console.log("Editing post:", {
-    postId,
-    title,
-    price,
-    buyReason,
-    skipReason,
-    category,
-    ...(imageUrl && { imageUrl }),
-  });
-  if (!title || !parsedPrice || !buyReason || !skipReason) {
-    return {
-      error: "All fields are required",
-    };
-  }
 
   try {
     await prisma.post.update({
