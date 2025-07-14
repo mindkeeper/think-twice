@@ -35,7 +35,7 @@ export default async function UserPost({ params }) {
 
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
-    <main className="min-h-screen ">
+    <div className="min-h-screen ">
       <div className="flex justify-between items-center py-2">
         <BackButton />
         <div className="text-sm font-bold">Post</div>
@@ -68,8 +68,13 @@ export default async function UserPost({ params }) {
               {ownedPost && (
                 <>
                   <DropdownMenuItem>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit
+                    <Link
+                      href={`/post/${postId}/edit`}
+                      className="flex items-center gap-2"
+                    >
+                      <Pencil className="mr-2 h-4 w-4" />
+                      Edit
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
@@ -91,13 +96,14 @@ export default async function UserPost({ params }) {
           </DropdownMenu>
         </div>
 
-        <div className="flex justify-center md:justify-start p-2">
-          <div className="relative w-70 h-70 rounded-lg overflow-hidden shadow-md border">
+        <div className="flex justify-center md:justify-start">
+          <div className="w-full overflow-hidden px-4 py-1">
             <Image
-              className="object-cover"
-              src="/images/example-img.jpg"
+              className="object-cover rounded-lg w-full h-auto aspect-square"
+              src={post.imageUrl}
               alt="produk"
-              fill
+              width={500}
+              height={500}
             />
           </div>
         </div>
@@ -138,6 +144,6 @@ export default async function UserPost({ params }) {
         </div>
         <div className="mt-1 mb-4 w-[280px] h-[1px] bg-zinc-300 rounded" />
       </div>
-    </main>
+    </div>
   );
 }

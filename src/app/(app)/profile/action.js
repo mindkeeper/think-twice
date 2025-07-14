@@ -65,5 +65,5 @@ export async function uploadAvatarAction(_prevState, formData) {
     console.error("Upload failed:", error);
   }
 
-  revalidatePath(`/profile/${userId}`);
+  revalidatePath(`/profile`);
 }
