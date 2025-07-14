@@ -16,3 +16,7 @@ export function validatepasswordPattern(password) {
     hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isValidLength
   );
 }
+
+export function formatPrice(price) {
+  return new Intl.NumberFormat("en-US").format(price);
+}

@@ -4,7 +4,7 @@ import { Ellipsis, LucideMessageCircle, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { cloneElement, isValidElement } from "react";
-import { createCommentAction, deleteCommentAction } from "../[postId]/action";
+import { createCommentAction, deleteCommentAction } from "../action";
 import { getCommentsByPostId } from "@/lib/services/comment";
 import { formatDistanceToNow } from "date-fns";
 import {

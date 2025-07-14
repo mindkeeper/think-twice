@@ -17,7 +17,7 @@ export default async function WishlistForm({ userId }) {
           {post.imageUrl && (
             <div className="relative w-full h-40">
               <Image
-                src="/images/example-img.jpg"
+                src={post.imageUrl}
                 alt=""
                 fill
                 className="w-full h-40 object-cover rounded-md self-center"
