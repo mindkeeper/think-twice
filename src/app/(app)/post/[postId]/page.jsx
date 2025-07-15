@@ -19,12 +19,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getPostById } from "@/lib/services/post";
 import Link from "next/link";
-import CommentsDrawer from "./_components/commentsDrawer";
+import CommentsDrawer from "./_components/commentsDrawerWrapper";
 import { formatPrice } from "@/lib/utils";
 import { getSession } from "@/lib/services/session";
 import BackButton from "@/components/BackButton";
 import { IMAGE_FALLBACK_URL } from "@/constant";
 import { VotingForm } from "./_components/VotingForm";
+import { getUserVoteData } from "@/lib/services/votes";
 import {
   Dialog,
   DialogClose,
@@ -49,6 +50,7 @@ export default async function UserPost({ params }) {
   }
 
   const ownedPost = user.id === post.user.id;
+  const voteData = await getUserVoteData(postId, user.id);
 
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
@@ -172,9 +174,18 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        {!ownedPost && <VotingForm postId={post.id} userId={user.id} />}
+        {!ownedPost && (
+          <VotingForm
+            postId={post.id}
+            userId={user.id}
+            initialVoteState={voteData}
+          />
+        )}
+        <div className="flex items-center text-xs py-2 font-semibold text-zinc-500">
+          (voted by {post.votes.length} people)
+        </div>
 
-        <div className="flex items-center gap-2 text-xs text-zinc-500 py-1 mt-2 mb-5 ">
+        <div className="flex items-center gap-2 text-xs text-zinc-500 py-4 mt-2 mb-5 ">
           <CommentsDrawer
             postId={post.id}
             trigger={

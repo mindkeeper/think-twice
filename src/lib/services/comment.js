@@ -1,3 +1,4 @@
+// /lib/services/comment.js
 import { prisma } from "@/utils/prisma";
 
 export async function getCommentsByPostId(postId) {

@@ -16,7 +16,7 @@ export default async function Profile() {
   const avatarUrl = user?.avatarUrl || avatarFallback;
   return (
     <main className="min-h-screen">
-      <div className="relative h-40 bg-gradient-to-br from-amber-100 to-lime-300">
+      <div className="relative h-40 bg-gradient-to-b from-purple-100 to-indigo-300 via-violet-200">
         <div className="absolute -bottom-12 left-6 w-24 h-24">
           <Image
             className="rounded-full border-4 border-white shadow-md object-cover"
