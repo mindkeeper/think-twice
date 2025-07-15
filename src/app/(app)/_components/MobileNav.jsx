@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Home, User } from "lucide-react";
-import NewPostDrawer from "./NewPostDrawer";
+import { Home, Plus, User } from "lucide-react";
 
 export default function MobileNav() {
   return (
@@ -9,7 +8,11 @@ export default function MobileNav() {
         <Link href="/">
           <Home className="w-6 h-6" />
         </Link>
-        <NewPostDrawer />
+        <div className="bg-black text-white rounded-full p-2">
+          <Link href="/post-creation">
+            <Plus className="w-6 h-6" />
+          </Link>
+        </div>
         <Link href="/profile">
           <User className="w-6 h-6" />
         </Link>

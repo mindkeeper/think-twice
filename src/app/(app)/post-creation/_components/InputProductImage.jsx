@@ -24,7 +24,7 @@ export default function InputProductImage({ file, setFile }) {
   };
 
   return (
-    <div className="relative w-40 h-40">
+    <div className="relative w-full aspect-square">
       {" "}
       <div className="relative grid w-full h-full border-dashed border-2 border-gray-200 rounded-lg place-items-center text-gray-500 overflow-hidden">
         {preview ? (

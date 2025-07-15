@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PostList({ posts }) {
   if (!posts || posts.length === 0) {
@@ -14,7 +15,8 @@ export default function PostList({ posts }) {
   return (
     <div className="space-y-6 p-4">
       {posts.map((post) => (
-        <div
+        <Link
+          href={`/post/${post.id}`}
           key={post.id}
           className="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-200 hover:shadow-lg"
         >
@@ -61,7 +63,7 @@ export default function PostList({ posts }) {
               })}
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

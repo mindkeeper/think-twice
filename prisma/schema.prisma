@@ -63,7 +63,7 @@ model Post {
   price      Decimal
   buyReason  String?  @map("buy_reason")
   skipReason String?  @map("skip_reason")
-  imageUrl   String   @map("image_url")
+  imageUrl   String?   @map("image_url")
   userId     String   @map("user_id")
   categoryId String   @map("category_id")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -91,8 +91,8 @@ model Vote {
   updatedAt DateTime  @updatedAt @map("updated_at")
 
   // Relations
-  user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   // Unique constraint
   @@unique([userId, postId], map: "unique_user_post_vote")
@@ -111,8 +111,8 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   // Indexes
   @@index([postId], map: "idx_comments_post_id")

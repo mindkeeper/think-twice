@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useActionState } from "react";
-import { createPost } from "@/app/post-creation/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 import CategorySelect from "./CategorySelect";
 import InputProductImage from "./InputProductImage";
+import { createPost } from "../actions";
 
 /**
  * Komponen formulir untuk membuat postingan baru.
@@ -46,9 +46,10 @@ export function CreatePostForm({ categories }) {
   }, [state, router]);
 
   return (
-    <form action={formAction} className="space-y-6 w-lg mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-left">Create Post</h2>
-
+    <form
+      action={formAction}
+      className="card flex flex-col shadow-md border rounded-md w-full mx-auto p-4 gap-4"
+    >
       {/* Input Product Image */}
       <div className="space-y-2">
         <Label htmlFor="imageFile">Product Image</Label>
@@ -97,7 +98,7 @@ export function CreatePostForm({ categories }) {
 
       {/* Input Reason to Buy */}
       <div className="space-y-2">
-        <Label htmlFor="buyReason">Reason to Buy optional</Label>
+        <Label htmlFor="buyReason">Reason to Buy</Label>
         <Textarea
           id="buyReason"
           name="buyReason"
@@ -111,7 +112,7 @@ export function CreatePostForm({ categories }) {
 
       {/* Input Reason to Skip */}
       <div className="space-y-2">
-        <Label htmlFor="skipReason">Reason to Skip optional</Label>
+        <Label htmlFor="skipReason">Reason to Skip</Label>
         <Textarea
           id="skipReason"
           name="skipReason"
