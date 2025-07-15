@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { votePost } from "@/lib/services/votes";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { CheckCircle, AlertTriangle, ThumbsDown } from "lucide-react";
 
 export function VotingForm({ postId, userId, initialVoteState }) {
   const [state, action, pending] = useActionState(votePost, initialVoteState);
@@ -27,21 +28,13 @@ export function VotingForm({ postId, userId, initialVoteState }) {
         setSkipPercentage(state.skipPercentage);
       }
 
-      toast.success(
-        <div className="flex items-center text-zinc-800">
-          You voted&nbsp;
-          <span
-            className={`font-semibold ${
-              state.vote === "BUY" ? "text-lime-500" : "text-red-500"
-            }`}
-          >
-            {state.vote === "BUY" ? "BUY" : "BYE"}
-          </span>
-          {state.vote === "BUY"
-            ? ". This one deserves space!"
-            : ". Less noise, more clarity!"}
-        </div>
-      );
+      const voteType = state.vote;
+
+      if (voteType === "BUY") {
+        toast.success("You voted BUY");
+      } else {
+        toast.success("You voted BYE");
+      }
     }
   }, [state]);
 
@@ -76,6 +69,9 @@ export function VotingForm({ postId, userId, initialVoteState }) {
     return buttonBase;
   };
 
+  const handleGreedyToast = () => {
+    toast.warning("You already voted!");
+  };
   return (
     <div className="flex flex-col items-center mt-6">
       <div className="text-xs text-zinc-500 py-2">So, what do you think?</div>
@@ -84,11 +80,7 @@ export function VotingForm({ postId, userId, initialVoteState }) {
           onSubmit={(e) => {
             if (voted) {
               e.preventDefault();
-              toast.error(
-                <div className="flex items-center text-zinc-800">
-                  Greedy much? You already voted.
-                </div>
-              );
+              handleGreedyToast();
             }
           }}
           action={action}
@@ -105,11 +97,7 @@ export function VotingForm({ postId, userId, initialVoteState }) {
           onSubmit={(e) => {
             if (voted) {
               e.preventDefault();
-              toast.error(
-                <div className="flex items-center text-zinc-800">
-                  Greedy much? You already voted.
-                </div>
-              );
+              handleGreedyToast();
             }
           }}
           action={action}

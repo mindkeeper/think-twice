@@ -26,6 +26,18 @@ import BackButton from "@/components/BackButton";
 import { IMAGE_FALLBACK_URL } from "@/constant";
 import { VotingForm } from "./_components/VotingForm";
 import { getUserVoteData } from "@/lib/services/votes";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { DeletePostButton } from "./_components/deletePostButton";
+import { notFound } from "next/navigation";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
@@ -33,12 +45,16 @@ export default async function UserPost({ params }) {
   const session = await getSession();
   const user = session?.user;
   const post = await getPostById(postId);
+  if (!post) {
+    notFound();
+  }
+
   const ownedPost = user.id === post.user.id;
   const voteData = await getUserVoteData(postId, user.id);
 
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
-    <main className="min-h-screen ">
+    <div className="min-h-screen ">
       <div className="flex justify-between items-center py-2">
         <BackButton />
         <div className="text-sm font-bold">Post</div>
@@ -63,44 +79,69 @@ export default async function UserPost({ params }) {
             </Link>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Ellipsis className="w-4 h-4 text-zinc-600" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {ownedPost && (
-                <>
-                  <DropdownMenuItem>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                </>
-              )}
-              <DropdownMenuItem>
-                <Bookmark className="mr-2 h-4 w-4" />
-                Bookmark
-              </DropdownMenuItem>
-              {ownedPost && (
-                <>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Dialog>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Ellipsis className="w-4 h-4 text-zinc-600" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ownedPost && (
+                  <>
+                    <DropdownMenuItem>
+                      <Link
+                        href={`/post/${postId}/edit`}
+                        className="flex items-center gap-2"
+                      >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        Edit
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem>
+                  <Bookmark className="mr-2 h-4 w-4" />
+                  Bookmark
+                </DropdownMenuItem>
+                {ownedPost && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem>
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DialogContent>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                post
+              </DialogDescription>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <DeletePostButton postId={postId} />
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
-        <div className="flex justify-center md:justify-start p-2">
-          <div className="relative w-70 h-70 rounded-lg overflow-hidden shadow-md border">
+        <div className="flex justify-center md:justify-start">
+          <div className="w-full overflow-hidden px-4 py-1">
             <Image
-              className="object-cover"
-              src={post.imageUrl}
+              className="object-cover rounded-lg w-full h-auto aspect-square"
+              src={post.imageUrl || IMAGE_FALLBACK_URL}
               alt="produk"
-              fill
+              width={500}
+              height={500}
             />
           </div>
         </div>
@@ -121,14 +162,14 @@ export default async function UserPost({ params }) {
               <div className="flex items-center gap-2 text-sm font-bold py-2 ">
                 <ThumbsUp className="w-4 h-4 text-lime-600" /> Buy Reason :{" "}
               </div>
-              <div className="text-xs">{post.buyReason}</div>
+              <div className="text-xs">{post.buyReason || ""}</div>
             </div>
             <div className="card shadow-md py-2 px-4 border rounded-lg">
               <div className="flex items-center gap-2 text-sm  font-bold py-2">
                 <ThumbsDown className="w-4 h-4 text-red-600" />
                 Skip Reason :
               </div>
-              <div className="text-xs">{post.skipReason}</div>
+              <div className="text-xs">{post.skipReason || ""}</div>
             </div>
           </div>
         </div>
@@ -156,6 +197,6 @@ export default async function UserPost({ params }) {
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 }
