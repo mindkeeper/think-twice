@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Ellipsis, LucideMessageCircle, Trash2 } from "lucide-react";
@@ -5,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { cloneElement, isValidElement } from "react";
 import { createCommentAction, deleteCommentAction } from "../action";
-import { getCommentsByPostId } from "@/lib/services/comment";
 import { formatDistanceToNow } from "date-fns";
 import {
   DropdownMenu,
@@ -19,12 +20,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { getSession } from "@/lib/services/session";
 
-export default async function CommentsDrawer({ trigger, postId }) {
-  const comments = await getCommentsByPostId(postId);
-  const session = await getSession();
-
+export function CommentsDrawer({ trigger, postId, comments, session }) {
   return (
     <Drawer>
       <DrawerTrigger asChild>

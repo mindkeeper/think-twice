@@ -16,7 +16,8 @@ export async function votePost(_prevState, formData) {
     });
     if (existingVote) {
       return {
-        error: "You have already voted on this post.",
+        error: "already-voted.",
+        ts: Date.now(),
       };
     }
     await prisma.vote.create({
@@ -26,15 +27,52 @@ export async function votePost(_prevState, formData) {
         postId,
       },
     });
+    const [totalVotes, buyVotes] = await Promise.all([
+      prisma.vote.count({
+        where: {
+          postId,
+        },
+      }),
+      prisma.vote.count({
+        where: { postId, type: "BUY" },
+      }),
+    ]);
+    const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+    const skipPercentage = 100 - buyPercentage;
+
+    revalidatePath("/post");
+    return {
+      success: true,
+      buyPercentage,
+      skipPercentage,
+      vote,
+      ts: Date.now(),
+    };
   } catch (error) {
     console.log(error);
     return {
       error: "Failed to vote on the post.",
     };
   }
+}
 
-  revalidatePath("/post");
+export async function getUserVoteData(postId, userId) {
+  const existingVote = await prisma.vote.findFirst({
+    where: { postId, userId },
+  });
+
+  const [totalVotes, buyVotes] = await Promise.all([
+    prisma.vote.count({ where: { postId } }),
+    prisma.vote.count({ where: { postId, type: "BUY" } }),
+  ]);
+
+  const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+  const skipPercentage = 100 - buyPercentage;
+
   return {
-    success: true,
+    success: !!existingVote,
+    vote: existingVote?.type || null,
+    buyPercentage,
+    skipPercentage,
   };
 }
