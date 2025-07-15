@@ -20,6 +20,7 @@ const INITIAL_STATE = {
 };
 
 export function EditPostForm({ post, categories = [] }) {
+  console.log(post);
   const [state, action, pending] = useActionState(
     editPostAction,
     INITIAL_STATE
@@ -63,16 +64,16 @@ export function EditPostForm({ post, categories = [] }) {
         <Label htmlFor="category" className="text-sm font-bold">
           Category
         </Label>
-        <Select required defaultValue="electronics" name="category">
+        <Select required defaultValue={post?.categoryId} name="category">
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="automotive">Automotive</SelectItem>
-            <SelectItem value="electronics">Electronics</SelectItem>
-            <SelectItem value="furniture">Furniture</SelectItem>
-            <SelectItem value="clothing">Clothing</SelectItem>
-            <SelectItem value="books">Books</SelectItem>
+            {categories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

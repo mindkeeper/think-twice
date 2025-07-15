@@ -3,6 +3,7 @@ import { prisma } from "@/utils/prisma";
 import { s3Client } from "@/utils/r2";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function editPostAction(_prevState, formData) {
   const postId = formData.get("postId");
@@ -51,6 +52,7 @@ export async function editPostAction(_prevState, formData) {
         price: parsedPrice,
         buyReason,
         skipReason,
+        categoryId: category,
         ...(imageUrl && { imageUrl }),
       },
     });
@@ -59,5 +61,7 @@ export async function editPostAction(_prevState, formData) {
     return { error: "Failed to update post" };
   }
 
+  revalidatePath(`/post/${postId}`, "layout");
+  revalidatePath("/profile");
   redirect(`/post/${postId}`);
 }

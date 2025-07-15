@@ -136,7 +136,7 @@ export default async function UserPost({ params }) {
           <div className="w-full overflow-hidden px-4 py-1">
             <Image
               className="object-cover rounded-lg w-full h-auto aspect-square"
-              src={post.imageUrl}
+              src={post.imageUrl || IMAGE_FALLBACK_URL}
               alt="produk"
               width={500}
               height={500}
@@ -160,14 +160,14 @@ export default async function UserPost({ params }) {
               <div className="flex items-center gap-2 text-sm font-bold py-2 ">
                 <ThumbsUp className="w-4 h-4 text-lime-600" /> Buy Reason :{" "}
               </div>
-              <div className="text-xs">{post.buyReason}</div>
+              <div className="text-xs">{post.buyReason || ""}</div>
             </div>
             <div className="card shadow-md py-2 px-4 border rounded-lg">
               <div className="flex items-center gap-2 text-sm  font-bold py-2">
                 <ThumbsDown className="w-4 h-4 text-red-600" />
                 Skip Reason :
               </div>
-              <div className="text-xs">{post.skipReason}</div>
+              <div className="text-xs">{post.skipReason || ""}</div>
             </div>
           </div>
         </div>
