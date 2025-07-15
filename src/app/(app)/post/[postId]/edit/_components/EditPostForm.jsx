@@ -20,7 +20,6 @@ const INITIAL_STATE = {
 };
 
 export function EditPostForm({ post, categories = [] }) {
-  console.log(post);
   const [state, action, pending] = useActionState(
     editPostAction,
     INITIAL_STATE

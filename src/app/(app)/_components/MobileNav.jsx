@@ -12,7 +12,7 @@ export default function MobileNav() {
           <Link href="/post-creation">
             <Plus className="w-6 h-6" />
           </Link>
-        </div>{" "}
+        </div>
         <Link href="/profile">
           <User className="w-6 h-6" />
         </Link>
