@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { votePost } from "@/lib/services/votes";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle, AlertTriangle, ThumbsDown } from "lucide-react";
 
 export function VotingForm({ postId, userId, initialVoteState }) {
   const [state, action, pending] = useActionState(votePost, initialVoteState);
