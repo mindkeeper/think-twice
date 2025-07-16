@@ -8,7 +8,7 @@ export default function MobileNav() {
         <Link href="/">
           <Home className="w-6 h-6" />
         </Link>
-        <div className="bg-black text-white rounded-full p-2">
+        <div className="bg-primary text-primary-foreground rounded-full p-2">
           <Link href="/post-creation">
             <Plus className="w-6 h-6" />
           </Link>
