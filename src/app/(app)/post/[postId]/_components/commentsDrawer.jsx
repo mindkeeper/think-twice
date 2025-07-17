@@ -148,8 +148,10 @@ export function CommentsDrawer({
         </div>
 
         <DrawerFooter>
+          <Separator className="mb-2" />
           <form action={createCommentAction} className="grid w-full gap-2">
             <input type="hidden" name="postId" value={postId} />
+
             <div className="flex justify-center gap-2">
               <div className="relative w-[40px] h-[40px]">
                 <Image

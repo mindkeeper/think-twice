@@ -7,9 +7,6 @@ export default async function Layout({ children }) {
   if (sessionId) {
     redirect("/");
   }
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <div className="w-full max-w-md m-auto p-6">{children}</div>
-    </div>
-  );
+
+  return <div className="min-h-screen flex flex-col">{children}</div>;
 }
