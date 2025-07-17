@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Ellipsis } from "lucide-react";
 
 export default function PostCard({ post }) {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -71,7 +70,6 @@ export default function PostCard({ post }) {
           <p className="font-semibold text-sm text-gray-900">
             {post.user?.name}
           </p>
-          <Ellipsis className="ml-auto w-4 h-4 text-gray-500" />
         </div>
 
         {/* Product Image Section */}

@@ -2,7 +2,9 @@
 
 import { Input } from "@/components/ui/input";
 import { votePost } from "@/lib/services/votes";
-import { useActionState, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { FontBrand } from "@/utils/font";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export function VotingForm({ postId, userId, initialVoteState, ownedPost }) {
@@ -39,7 +41,7 @@ export function VotingForm({ postId, userId, initialVoteState, ownedPost }) {
 
   const voted = state?.success;
 
-  const buttonBase = `flex justify-center items-center overflow-hidden whitespace-nowrap rounded-xl font-semibold px-6 py-2 text-sm w-[100px] shadow-md transition-all duration-300 group`;
+  const buttonBase = `flex justify-center items-center overflow-hidden whitespace-nowrap rounded-lg font-semibold px-6 py-2 text-sm w-[100px] shadow-md transition-all duration-300 group`;
 
   const getButtonClass = (type) => {
     const isActive = selectedVote === type;
@@ -47,30 +49,30 @@ export function VotingForm({ postId, userId, initialVoteState, ownedPost }) {
 
     if (ownedPost) {
       if (type === "BUY") {
-        return `${buttonBase} border-2 border-lime-400 bg-lime-500 text-white cursor-default`;
+        return `${buttonBase} border-2 border-green-500 bg-green-600 text-white cursor-default`;
       }
       if (type === "SKIP") {
-        return `${buttonBase} border-2 border-red-500 bg-red-500 text-white cursor-default`;
+        return `${buttonBase} border-2 border-yellow-500 bg-yellow-600 text-white cursor-default`;
       }
     }
 
     if (type === "BUY") {
-      return `${buttonBase} border-2 border-lime-400 cursor-pointer ${
+      return `${buttonBase} border-2 border-green-500 cursor-pointer ${
         isActive
-          ? "bg-lime-500 text-white"
+          ? "bg-green-600 text-white"
           : isInactive
           ? "opacity-40 cursor-default"
-          : "text-lime-800 hover:bg-lime-400 hover:text-white"
+          : "text-green-800 hover:bg-green-600 hover:text-white"
       }`;
     }
 
     if (type === "SKIP") {
-      return `${buttonBase} border-2 border-red-500 cursor-pointer ${
+      return `${buttonBase} border-2 border-yellow-500 cursor-pointer ${
         isActive
-          ? "bg-red-500 text-white"
+          ? "bg-yellow-600 text-white"
           : isInactive
           ? "opacity-40 cursor-default"
-          : "text-red-800 hover:bg-red-500 hover:text-white"
+          : "text-yellow-800 hover:bg-yellow-600 hover:text-white"
       }`;
     }
 
@@ -80,9 +82,27 @@ export function VotingForm({ postId, userId, initialVoteState, ownedPost }) {
   const handleGreedyToast = () => {
     toast.warning("You already voted!");
   };
+
+  const voteText = useMemo(() => {
+    let text = "So What Do You Think?";
+    if (selectedVote) {
+      text = `You've Voted ${selectedVote === "BUY" ? "BUY" : "Bye"}`;
+    }
+    if (ownedPost) {
+      text = "Vote Results";
+    }
+    return text;
+  }, [selectedVote]);
   return (
-    <div className="flex flex-col items-center mt-6">
-      <div className="text-xs text-zinc-500 py-2">So, what do you think?</div>
+    <div className="flex flex-col items-center">
+      <div
+        className={cn("font-bold mb-2", FontBrand.className, {
+          "text-green-700": selectedVote === "BUY",
+          "text-yellow-600": selectedVote === "SKIP",
+        })}
+      >
+        {voteText}
+      </div>
       <div className="flex justify-center items-center gap-x-4 py-2">
         <form
           onSubmit={(e) => {

@@ -1,7 +1,5 @@
 import { prisma } from "@/utils/prisma";
-import Link from "next/link";
 import PostCard from "./post-creation/_components/PostCard";
-import { Button } from "@/components/ui/button";
 
 export default async function HomePage() {
   let posts = [];
