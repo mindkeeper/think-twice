@@ -4,6 +4,7 @@
     "": {
       "name": "think-twice",
       "dependencies": {
+        "think-twice": ".",
         "@aws-sdk/client-s3": "^3.842.0",
         "@prisma/client": "^6.11.1",
         "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -1098,6 +1099,8 @@
     "tapable": ["tapable@2.2.2", "", {}, "sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg=="],
 
     "tar": ["tar@7.4.3", "", { "dependencies": { "@isaacs/fs-minipass": "^4.0.0", "chownr": "^3.0.0", "minipass": "^7.1.2", "minizlib": "^3.0.1", "mkdirp": "^3.0.1", "yallist": "^5.0.0" } }, "sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw=="],
+
+    "think-twice": ["think-twice@file:", { "dependencies": { "@aws-sdk/client-s3": "^3.842.0", "@prisma/client": "^6.11.1", "@radix-ui/react-aspect-ratio": "^1.1.7", "@radix-ui/react-dialog": "^1.1.14", "@radix-ui/react-dropdown-menu": "^2.1.15", "@radix-ui/react-label": "^2.1.7", "@radix-ui/react-select": "^2.2.5", "@radix-ui/react-separator": "^1.1.7", "@radix-ui/react-slot": "^1.2.3", "arctic": "^3.7.0", "bcrypt": "^6.0.0", "class-variance-authority": "^0.7.1", "clsx": "^2.1.1", "date-fns": "^4.1.0", "framer-motion": "^12.23.5", "lucide-react": "^0.525.0", "next": "15.3.5", "next-themes": "^0.4.6", "openai": "^5.8.2", "prisma": "^6.11.1", "react": "^19.0.0", "react-dom": "^19.0.0", "react-hot-toast": "^2.5.2", "sonner": "^2.0.6", "tailwind-merge": "^3.3.1", "vaul": "^1.1.2" }, "devDependencies": { "@eslint/eslintrc": "^3", "@tailwindcss/postcss": "^4", "eslint": "^9", "eslint-config-next": "15.3.5", "husky": "^9.1.7", "tailwindcss": "^4", "tw-animate-css": "^1.3.5" } }],
 
     "tinyglobby": ["tinyglobby@0.2.14", "", { "dependencies": { "fdir": "^6.4.4", "picomatch": "^4.0.2" } }, "sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ=="],
 
