@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Tags, Banknote } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { Ellipsis } from "lucide-react";
 
 export default function PostCard({ post }) {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -18,6 +18,28 @@ export default function PostCard({ post }) {
     maximumFractionDigits: 0,
   }).format(Number(post.price));
 
+  const calculateVotePercentages = () => {
+    if (!post.votes || post.votes.length === 0) {
+      return { buyPercentage: 0, skipPercentage: 0 };
+    }
+
+    const buyVotes = post.votes.filter((vote) => vote.type === "BUY").length;
+    const skipVotes = post.votes.filter((vote) => vote.type === "SKIP").length;
+    const totalVotes = buyVotes + skipVotes;
+
+    if (totalVotes === 0) {
+      return { buyPercentage: 0, skipPercentage: 0 };
+    }
+
+    const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+    const skipPercentage = Math.round((skipVotes / totalVotes) * 100);
+
+    return { buyPercentage, skipPercentage };
+  };
+
+  const { buyPercentage, skipPercentage } = calculateVotePercentages();
+  const commentCount = post.comments?.length || 0;
+
   const handleImageLoad = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
     setImageDimensions({ width: naturalWidth, height: naturalHeight });
@@ -26,10 +48,10 @@ export default function PostCard({ post }) {
 
   return (
     <Link href={`/post/${post.id}`} key={post.id} className="block">
-      <div className="bg-white overflow-hidden cursor-pointer">
+      <div className="bg-white border-1 border-gray-50 overflow-hidden cursor-pointer">
         {/* User Info Section */}
-        <div className="flex items-center my-4 border-gray-200">
-          <div className="w-6 h-6 relative rounded-full overflow-hidden mr-2 bg-gray-200">
+        <div className="flex items-center my-4 px-4 py-2 border-gray-200">
+          <div className="w-8 h-8 relative rounded-full overflow-hidden mr-2 bg-gray-200">
             {post.user?.avatarUrl && post.user.avatarUrl.trim() !== "" ? (
               <Image
                 src={post.user.avatarUrl}
@@ -49,6 +71,7 @@ export default function PostCard({ post }) {
           <p className="font-semibold text-sm text-gray-900">
             {post.user?.name}
           </p>
+          <Ellipsis className="ml-auto w-4 h-4 text-gray-500" />
         </div>
 
         {/* Product Image Section */}
@@ -72,7 +95,7 @@ export default function PostCard({ post }) {
                   } ${
                     !imageLoaded ? "opacity-0" : "opacity-100"
                   } transition-opacity duration-300`}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="100vw"
                   onLoad={handleImageLoad}
                   priority={false}
                 />
@@ -88,18 +111,34 @@ export default function PostCard({ post }) {
         </div>
 
         {/* Product Details Section */}
-        <div className="mt-4">
-          <h3 className="text-md font-bold text-gray-900 mb-1 leading-tight">
-            {post.title}
-          </h3>
+        <div className="mt-4 px-4 py-2 space-y-4">
+          <div className="flex w-full text-wrap items-center justify-between">
+            <h3 className="text-lg font-bold text-gray-900 mb-1 leading-tight">
+              {post.title}
+            </h3>
+            <div className="space-x-2 mb-1">
+              <div className="inline-flex items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold space-x-2 px-2 py-0.5 rounded-full">
+                <div className="inline-flex items-center font-bold text-green-700">
+                  💸 {buyPercentage}%
+                </div>
+                <div className="inline-block h-fill w-0.5 self-stretch bg-gray-100"></div>
+                <div className="inline-flex items-center font-bold text-yellow-600">
+                  👎 {skipPercentage}%
+                </div>
+              </div>
+              <div className="inline-flex items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold px-2 py-0.5 rounded-full">
+                💬 {commentCount}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center place-content-between justify-between text-gray-600 text-sm mb-2">
+            <p className="text-lg font-medium text-gray-900 mb-2">
+              <span className="text-2xl">💰</span> {formattedPrice} IDR
+            </p>
 
-          <p className="text-md font-mono text-gray-900 mb-2">
-            {formattedPrice} IDR
-          </p>
-
-          <div className="inline-flex items-center bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-            <Tags className="w-4 h-4 mr-1" />
-            {post.category?.name}
+            <div className="inline-flex items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold px-2 py-0.5 mb-3 rounded-full">
+              {post.category?.name}
+            </div>
           </div>
         </div>
       </div>

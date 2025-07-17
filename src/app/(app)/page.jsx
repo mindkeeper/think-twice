@@ -13,6 +13,8 @@ export default async function HomePage() {
       include: {
         user: true,
         category: true,
+        votes: true,
+        comments: true,
       },
     });
     posts = posts.map((post) => {
@@ -44,6 +46,10 @@ export default async function HomePage() {
         postForClient.category = null;
       }
 
+      // Include votes and comments in the client object
+      postForClient.votes = post.votes || [];
+      postForClient.comments = post.comments || [];
+
       return postForClient;
     });
   } catch (error) {
@@ -65,7 +71,7 @@ export default async function HomePage() {
         </Button>
       </div> */}
 
-      <section className="w-full space-y-2">
+      <section className="w-full space-y-3 bg-gray-100">
         {posts.length > 0 &&
           posts.map((singlePost) => (
             <PostCard key={singlePost.id} post={singlePost} />
