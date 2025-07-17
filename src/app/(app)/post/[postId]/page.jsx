@@ -49,8 +49,8 @@ export default async function UserPost({ params }) {
     notFound();
   }
 
-  const ownedPost = user.id === post.user.id;
-  const voteData = await getUserVoteData(postId, user.id);
+  const ownedPost = user?.id === post.user.id;
+  const voteData = await getUserVoteData(postId, user?.id);
 
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
@@ -174,13 +174,13 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        {!ownedPost && (
-          <VotingForm
-            postId={post.id}
-            userId={user.id}
-            initialVoteState={voteData}
-          />
-        )}
+        <VotingForm
+          postId={post.id}
+          userId={user?.id}
+          initialVoteState={voteData}
+          ownedPost={ownedPost}
+        />
+
         <div className="flex items-center text-xs py-2 font-semibold text-zinc-500">
           (voted by {post.votes.length} people)
         </div>

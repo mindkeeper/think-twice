@@ -5,9 +5,13 @@ import EditProfileModal from "./components/editProfileModal";
 import WishlistForm from "./components/wishlistForm";
 import { getSession } from "@/lib/services/session";
 import { getPostCountByUserId } from "@/lib/services/post";
+import { redirect } from "next/navigation";
 
 export default async function Profile() {
   const session = await getSession();
+  if (!session) {
+    redirect("/sign-in");
+  }
   const user = session?.user;
 
   const postCount = await getPostCountByUserId(user.id);
