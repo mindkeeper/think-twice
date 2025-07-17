@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Clock, Ellipsis, Send, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import { cloneElement, isValidElement } from "react";
+import { cloneElement, isValidElement, useActionState } from "react";
 import { createCommentAction, deleteCommentAction } from "../action";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -21,6 +21,10 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+const INITIAL_STATE = {
+  error: null,
+};
+
 export function CommentsDrawer({
   trigger,
   postId,
@@ -28,6 +32,11 @@ export function CommentsDrawer({
   session,
   authorId,
 }) {
+  const [_state, action, pending] = useActionState(
+    createCommentAction,
+    INITIAL_STATE
+  );
+
   return (
     <Drawer>
       <DrawerTrigger asChild>

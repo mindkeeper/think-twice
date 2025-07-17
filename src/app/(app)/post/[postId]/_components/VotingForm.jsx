@@ -5,7 +5,7 @@ import { votePost } from "@/lib/services/votes";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export function VotingForm({ postId, userId, initialVoteState }) {
+export function VotingForm({ postId, userId, initialVoteState, ownedPost }) {
   const [state, action, pending] = useActionState(votePost, initialVoteState);
   const [selectedVote, setSelectedVote] = useState(null);
   const [buyPercentage, setBuyPercentage] = useState(
@@ -45,6 +45,15 @@ export function VotingForm({ postId, userId, initialVoteState }) {
     const isActive = selectedVote === type;
     const isInactive = selectedVote && selectedVote !== type;
 
+    if (ownedPost) {
+      if (type === "BUY") {
+        return `${buttonBase} border-2 border-lime-400 bg-lime-500 text-white cursor-default`;
+      }
+      if (type === "SKIP") {
+        return `${buttonBase} border-2 border-red-500 bg-red-500 text-white cursor-default`;
+      }
+    }
+
     if (type === "BUY") {
       return `${buttonBase} border-2 border-lime-400 cursor-pointer ${
         isActive
@@ -77,9 +86,11 @@ export function VotingForm({ postId, userId, initialVoteState }) {
       <div className="flex justify-center items-center gap-x-4 py-2">
         <form
           onSubmit={(e) => {
-            if (voted) {
+            if (voted || ownedPost) {
               e.preventDefault();
-              handleGreedyToast();
+              if (voted) {
+                handleGreedyToast();
+              }
             }
           }}
           action={action}
@@ -87,16 +98,21 @@ export function VotingForm({ postId, userId, initialVoteState }) {
           <Input name="postId" type="hidden" defaultValue={postId} />
           <Input name="userId" type="hidden" defaultValue={userId} />
           <Input name="vote" type="hidden" defaultValue="BUY" />
-          <button className={getButtonClass("BUY")}>
-            {voted ? `${buyPercentage}% BUY` : "BUY"}
+          <button
+            className={getButtonClass("BUY")}
+            disabled={voted || ownedPost}
+          >
+            {voted || ownedPost ? `${buyPercentage}% BUY` : "BUY"}
           </button>
         </form>
 
         <form
           onSubmit={(e) => {
-            if (voted) {
+            if (voted || ownedPost) {
               e.preventDefault();
-              handleGreedyToast();
+              if (voted) {
+                handleGreedyToast();
+              }
             }
           }}
           action={action}
@@ -104,8 +120,11 @@ export function VotingForm({ postId, userId, initialVoteState }) {
           <Input name="postId" type="hidden" defaultValue={postId} />
           <Input name="userId" type="hidden" defaultValue={userId} />
           <Input name="vote" type="hidden" defaultValue="SKIP" />
-          <button className={getButtonClass("SKIP")}>
-            {voted ? `${skipPercentage}% BYE` : "BYE"}
+          <button
+            className={getButtonClass("SKIP")}
+            disabled={voted || ownedPost}
+          >
+            {voted || ownedPost ? `${skipPercentage}% BYE` : "BYE"}
           </button>
         </form>
       </div>
