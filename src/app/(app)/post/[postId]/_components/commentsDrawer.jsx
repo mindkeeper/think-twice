@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Ellipsis, LucideMessageCircle, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import { cloneElement, isValidElement } from "react";
+import { cloneElement, isValidElement, useActionState } from "react";
 import { createCommentAction, deleteCommentAction } from "../action";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -21,7 +21,15 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+const INITIAL_STATE = {
+  error: null,
+};
+
 export function CommentsDrawer({ trigger, postId, comments, session }) {
+  const [_state, action, pending] = useActionState(
+    createCommentAction,
+    INITIAL_STATE
+  );
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -99,14 +107,15 @@ export function CommentsDrawer({ trigger, postId, comments, session }) {
         </div>
 
         <DrawerFooter>
-          <form action={createCommentAction} className="grid w-full gap-2 px-2">
+          <form action={action} className="grid w-full gap-2 px-2">
             <input type="hidden" name="postId" value={postId} />
             <Textarea
+              disabled={pending}
               name="comment"
               className="text-md"
               placeholder="Leave your thoughts here..."
             />
-            <Button>Send</Button>
+            <Button disabled={pending}>Send</Button>
           </form>
         </DrawerFooter>
       </DrawerContent>

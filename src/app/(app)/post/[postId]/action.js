@@ -6,15 +6,19 @@ import { prisma } from "@/utils/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function createCommentAction(formData) {
+export async function createCommentAction(_prevState, formData) {
   const session = await getSession();
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   const userId = session?.user?.id;
 
   const comment = formData.get("comment");
   const postId = formData.get("postId");
 
   await createComment({ userId, postId, comment });
-
   revalidatePath(`/post/${postId}`);
 }
 

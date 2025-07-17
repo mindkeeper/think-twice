@@ -1,8 +1,15 @@
 "use server";
 import { prisma } from "@/utils/prisma";
 import { revalidatePath } from "next/cache";
+import { getSession } from "./session";
+import { redirect } from "next/navigation";
 
 export async function votePost(_prevState, formData) {
+  const session = await getSession();
+  if (!session) {
+    redirect("/sign-in");
+  }
+
   const postId = formData.get("postId");
   const vote = formData.get("vote");
   const userId = formData.get("userId");
@@ -57,6 +64,14 @@ export async function votePost(_prevState, formData) {
 }
 
 export async function getUserVoteData(postId, userId) {
+  if (!userId) {
+    return {
+      success: false,
+      vote: null,
+      buyPercentage: 0,
+      skipPercentage: 0,
+    };
+  }
   const existingVote = await prisma.vote.findFirst({
     where: { postId, userId },
   });
@@ -66,7 +81,8 @@ export async function getUserVoteData(postId, userId) {
     prisma.vote.count({ where: { postId, type: "BUY" } }),
   ]);
 
-  const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+  const buyPercentage =
+    totalVotes > 0 ? Math.round((buyVotes / totalVotes) * 100) : 50;
   const skipPercentage = 100 - buyPercentage;
 
   return {
