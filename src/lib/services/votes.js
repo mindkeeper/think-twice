@@ -81,8 +81,7 @@ export async function getUserVoteData(postId, userId) {
     prisma.vote.count({ where: { postId, type: "BUY" } }),
   ]);
 
-  const buyPercentage =
-    totalVotes > 0 ? Math.round((buyVotes / totalVotes) * 100) : 50;
+  const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
   const skipPercentage = 100 - buyPercentage;
 
   return {
