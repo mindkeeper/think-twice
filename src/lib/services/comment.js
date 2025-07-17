@@ -1,17 +1,15 @@
-// /lib/services/comment.js
 import { prisma } from "@/utils/prisma";
 
 export async function getCommentsByPostId(postId) {
   const comments = await prisma.comment.findMany({
-    where: {
-      postId,
-    },
+    where: { postId },
     include: {
       user: {
-        select: {
-          id: true,
-          name: true,
-          avatarUrl: true,
+        include: {
+          votes: {
+            where: { postId },
+            select: { type: true },
+          },
         },
       },
     },
