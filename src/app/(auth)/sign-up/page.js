@@ -60,7 +60,7 @@ export default function SignUpPage() {
                   type="text"
                   placeholder="John Doe"
                   required
-                  className="rounded-full h-12"
+                  className="rounded-full h-12 bg-slate-100"
                 />
               </div>
               <div className="grid gap-3">
@@ -75,7 +75,7 @@ export default function SignUpPage() {
                   type="email"
                   placeholder="m@example.com"
                   required
-                  className="rounded-full h-12"
+                  className="rounded-full h-12 bg-slate-100"
                 />
               </div>
               <div className="grid gap-3">
@@ -90,7 +90,7 @@ export default function SignUpPage() {
                   type="password"
                   placeholder="input your password"
                   required
-                  className="rounded-full h-12"
+                  className="rounded-full h-12 bg-slate-100"
                 />
                 {state.error && (
                   <p className="text-red-500 text-sm">{state.error}</p>
