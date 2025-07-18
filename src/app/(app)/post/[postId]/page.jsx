@@ -32,10 +32,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import CommentsDrawerWrapper from "./_components/commentsDrawerWrapper";
 import { DeletePostButton } from "./_components/deletePostButton";
 import { VotingForm } from "./_components/VotingForm";
 import { BookmarkPostButton } from "./bookmark/_components/bookmarkPostButton";
+import CommentsDrawer from "./_components/commentsDrawerWrapper";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
@@ -201,8 +201,8 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-2 text-xs text-neutral-500 py-4 mt-2 mb-5">
-          <CommentsDrawerWrapper
+        <div className="flex justify-center items-center gap-2 text-xs text-neutral-500 py-4 mt-2 mb-5 ">
+          <CommentsDrawer
             postId={post.id}
             trigger={
               <button className="flex items-center gap-1 text-xs text-neutral-500 hover:underline">

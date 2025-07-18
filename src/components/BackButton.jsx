@@ -9,11 +9,11 @@ export default function BackButton() {
 
   return (
     <Button
-      variant="ghost"
+      variant="link"
       onClick={() => router.back()}
-      className="flex items-center gap-2"
+      className="flex items-center gap-2 text-neutral-900 font-bold"
     >
-      <ChevronLeft className="size-5" />
+      <ChevronLeft className="size-6" />
     </Button>
   );
 }

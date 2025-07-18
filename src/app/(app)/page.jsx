@@ -1,7 +1,5 @@
 import { prisma } from "@/utils/prisma";
-import Link from "next/link";
 import PostCard from "./post-creation/_components/PostCard";
-import { Button } from "@/components/ui/button";
 
 export default async function HomePage() {
   let posts = [];
@@ -71,7 +69,7 @@ export default async function HomePage() {
         </Button>
       </div> */}
 
-      <section className="w-full space-y-3 bg-gray-100">
+      <section className="w-full space-y-2 mt-14">
         {posts.length > 0 &&
           posts.map((singlePost) => (
             <PostCard key={singlePost.id} post={singlePost} />
