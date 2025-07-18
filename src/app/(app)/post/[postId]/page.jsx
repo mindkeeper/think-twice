@@ -21,9 +21,9 @@ import { IMAGE_FALLBACK_URL } from "@/constant";
 import { getPostById } from "@/lib/services/post";
 import { getSession } from "@/lib/services/session";
 import { getUserVoteData } from "@/lib/services/votes";
+import { isPostBookmarked } from "@/lib/services/bookmark";
 import { formatPrice } from "@/lib/utils";
 import {
-  Bookmark,
   EllipsisVertical,
   LucideMessageCircle,
   Pencil,
@@ -32,9 +32,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import CommentsDrawer from "./_components/commentsDrawerWrapper";
 import { DeletePostButton } from "./_components/deletePostButton";
 import { VotingForm } from "./_components/VotingForm";
+import { BookmarkPostButton } from "./bookmark/_components/bookmarkPostButton";
+import CommentsDrawer from "./_components/commentsDrawerWrapper";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
@@ -42,14 +43,13 @@ export default async function UserPost({ params }) {
   const session = await getSession();
   const user = session?.user;
   const post = await getPostById(postId);
-  if (!post) {
-    notFound();
-  }
+  if (!post) notFound();
 
   const ownedPost = user?.id === post.user.id;
   const voteData = await getUserVoteData(postId, user?.id);
-
+  const isBookmarked = await isPostBookmarked(user?.id, postId);
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
+
   return (
     <div className="min-h-screen relative">
       <div className="flex flex-col w-full mx-auto pt-12">
@@ -94,10 +94,14 @@ export default async function UserPost({ params }) {
                     <DropdownMenuSeparator />
                   </>
                 )}
-                <DropdownMenuItem>
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  Bookmark
+
+                <DropdownMenuItem asChild>
+                  <BookmarkPostButton
+                    postId={post.id}
+                    isBookmarkedInitial={isBookmarked}
+                  />
                 </DropdownMenuItem>
+
                 {ownedPost && (
                   <>
                     <DropdownMenuSeparator />
@@ -115,7 +119,7 @@ export default async function UserPost({ params }) {
               <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
                 This action cannot be undone. This will permanently delete your
-                post
+                post.
               </DialogDescription>
               <DialogFooter>
                 <DialogClose asChild>
@@ -169,7 +173,6 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        {/* Description and Voting Section */}
         <div className="bg-gray-100 p-4 flex flex-col gap-4">
           <Card className="shadow-none rounded-lg bg-white">
             <CardContent className="space-y-4">
@@ -184,6 +187,7 @@ export default async function UserPost({ params }) {
               </div>
             </CardContent>
           </Card>
+
           <VotingForm
             postId={post.id}
             userId={user?.id}

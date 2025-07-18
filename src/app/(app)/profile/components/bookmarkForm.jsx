@@ -1,10 +1,10 @@
 "use client";
 
-import { LucideMessageCircleMore, Vote } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Vote, LucideMessageCircleMore } from "lucide-react";
 
-export default function WishlistForm({ posts }) {
+export default function BookmarkForm({ posts }) {
   return (
     <div className="grid grid-cols-2 max-w-xl mx-auto gap-4 mt-6 mb-5">
       {posts.map((post) => (
