@@ -1,7 +1,10 @@
 "use server";
 
-import { createComment } from "@/lib/services/comment";
+import { SUMMARIZE_PROMPT } from "@/constant";
+import { createComment, getCommentsByPostId } from "@/lib/services/comment";
 import { getSession } from "@/lib/services/session";
+import { getTotalVotes } from "@/lib/services/votes";
+import { openai } from "@/utils/openai";
 import { prisma } from "@/utils/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -54,4 +57,36 @@ export async function deletePostAction(_prevState, formData) {
   }
   revalidatePath(`/`, "layout");
   redirect("/profile");
+}
+
+export async function generateSummarization(_prevState, formData) {
+  const postId = formData.get("postId");
+  const session = await getSession();
+  const userId = session?.user?.id;
+  const comments = await prisma.comment.findMany({
+    where: { postId, userId: { not: userId } },
+    select: {
+      comment: true,
+    },
+  });
+
+  const votes = await getTotalVotes(postId);
+
+  const systemPrompt = SUMMARIZE_PROMPT.SYSTEM_PROMPT;
+  const userPrompt = `${SUMMARIZE_PROMPT.USER_PROMPT}
+  comments: ${comments.map((comment) => comment.comment)}
+  votes: ${JSON.stringify(votes)}
+  `;
+
+  const res = await openai.responses.create({
+    model: "gpt-4.1",
+    instructions: systemPrompt,
+    input: userPrompt,
+  });
+
+  return {
+    success: true,
+    error: null,
+    output: res.output_text,
+  };
 }

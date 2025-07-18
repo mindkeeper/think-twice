@@ -21,6 +21,7 @@ import { Clock, EllipsisVertical, Send, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { cloneElement, isValidElement, useActionState } from "react";
 import { createCommentAction, deleteCommentAction } from "../action";
+import { AiSummarization } from "./AISummarization";
 
 const INITIAL_STATE = {
   error: null,
@@ -32,6 +33,7 @@ export function CommentsDrawer({
   comments,
   session,
   authorId,
+  ownedPost = false,
 }) {
   const [_state, action, pending] = useActionState(
     createCommentAction,
@@ -57,6 +59,9 @@ export function CommentsDrawer({
           </DrawerTitle>
         </div>
         <Separator className="mb-2" />
+        {ownedPost && (
+          <AiSummarization postId={postId} commentCount={comments.length} />
+        )}
 
         <div className={cn("flex-1 overflow-y-auto mt-2 space-y-3 px-2")}>
           {!comments.length ? (

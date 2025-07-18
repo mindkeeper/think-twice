@@ -91,3 +91,21 @@ export async function getUserVoteData(postId, userId) {
     skipPercentage,
   };
 }
+
+export async function getTotalVotes(postId) {
+  const votes = await prisma.vote.groupBy({
+    by: ["type"],
+    _count: {
+      type: true,
+    },
+    where: { postId },
+  });
+  const buyVotes = votes.find((vote) => vote.type === "BUY")?._count?.type || 0;
+  const skipVotes =
+    votes.find((vote) => vote.type === "SKIP")?._count?.type || 0;
+  return {
+    buyVotes,
+    skipVotes,
+    totalVotes: buyVotes + skipVotes,
+  };
+}
