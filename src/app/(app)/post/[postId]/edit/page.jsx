@@ -24,12 +24,7 @@ export default async function Page({ params }) {
 
   return (
     <div className="min-h-screen">
-      <div className="flex justify-between items-center py-2">
-        <BackButton />
-        <div className="text-sm font-bold">Edit Post</div>
-        <div className="w-12" />
-      </div>
-      <div className="card flex flex-col justify-center items-center shadow-md border rounded-md w-full mx-auto">
+      <div className="pt-12 flex flex-col justify-center items-center shadow-md  rounded-md w-full mx-auto">
         <EditPostForm post={post} categories={categories} />
       </div>
     </div>
