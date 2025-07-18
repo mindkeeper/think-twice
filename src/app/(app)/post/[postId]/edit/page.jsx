@@ -24,7 +24,7 @@ export default async function Page({ params }) {
 
   return (
     <div className="min-h-screen">
-      <div className="pt-12 flex flex-col justify-center items-center shadow-md  rounded-md w-full mx-auto">
+      <div className="pt-12 flex flex-col justify-center items-center w-full mx-auto">
         <EditPostForm post={post} categories={categories} />
       </div>
     </div>
