@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -15,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { IMAGE_FALLBACK_URL } from "@/constant";
 import { getPostById } from "@/lib/services/post";
 import { getSession } from "@/lib/services/session";
@@ -25,21 +27,14 @@ import {
   EllipsisVertical,
   LucideMessageCircle,
   Pencil,
-  Tags,
-  ThumbsDown,
-  ThumbsUp,
   Trash2,
-  Wallet,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import TopNavigation from "../_components/top-navigation";
 import CommentsDrawer from "./_components/commentsDrawerWrapper";
 import { DeletePostButton } from "./_components/deletePostButton";
 import { VotingForm } from "./_components/VotingForm";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 export default async function UserPost({ params }) {
   const { postId } = await params;
@@ -57,7 +52,6 @@ export default async function UserPost({ params }) {
   const avatarUrl = post.user.avatarUrl || IMAGE_FALLBACK_URL;
   return (
     <div className="min-h-screen relative">
-      <TopNavigation title="Post" />
       <div className="flex flex-col w-full mx-auto pt-12">
         <div className="flex justify-between items-center w-full px-4 py-1">
           <div className="flex items-center gap-2 my-2">
@@ -147,7 +141,7 @@ export default async function UserPost({ params }) {
           </div>
         </div>
 
-        <div className="w-full grid grid-cols-2 px-4 py-2 gap-4">
+        <div className="w-full grid grid-cols-2 p-4 gap-4">
           <div className="text-wrap text-lg font-bold leading-tight">
             {post.title}
           </div>
