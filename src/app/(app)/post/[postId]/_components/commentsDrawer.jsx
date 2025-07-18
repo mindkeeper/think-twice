@@ -1,18 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Clock, Ellipsis, Send, Trash2 } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
-import { cloneElement, isValidElement, useActionState } from "react";
-import { createCommentAction, deleteCommentAction } from "../action";
-import { formatDistanceToNow } from "date-fns";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Drawer,
   DrawerContent,
@@ -20,6 +8,19 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { FontBrand } from "@/utils/font";
+import { formatDistanceToNow } from "date-fns";
+import { Clock, EllipsisVertical, Send, Trash2 } from "lucide-react";
+import Image from "next/image";
+import { cloneElement, isValidElement, useActionState } from "react";
+import { createCommentAction, deleteCommentAction } from "../action";
 
 const INITIAL_STATE = {
   error: null,
@@ -57,35 +58,45 @@ export function CommentsDrawer({
         </div>
         <Separator className="mb-2" />
 
-        <div className="flex-1 overflow-y-auto mt-2 space-y-3 px-2">
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <div className="flex items-start gap-3">
-                <div className="relative w-8 h-8 flex-shrink-0">
-                  <Image
-                    className="rounded-full border-2 border-white shadow-md"
-                    src={comment.user.avatarUrl || "/images/default-avatar.jpg"}
-                    alt="profile"
-                    fill
-                  />
-                </div>
+        <div className={cn("flex-1 overflow-y-auto mt-2 space-y-3 px-2")}>
+          {!comments.length ? (
+            <div className="text-center text-sm text-zinc-500">
+              <p className={cn("text-lg", FontBrand.className)}>
+                No comments yet
+              </p>
+              <p className="mt-2">Be the first to comment!</p>
+            </div>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment.id}>
+                <div className="flex items-start gap-3">
+                  <div className="relative w-8 h-8 flex-shrink-0">
+                    <Image
+                      className="rounded-full border-2 border-white shadow-md"
+                      src={
+                        comment.user.avatarUrl || "/images/default-avatar.jpg"
+                      }
+                      alt="profile"
+                      fill
+                    />
+                  </div>
 
-                <div className="flex-1 flex flex-col">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-zinc-700">
-                        {comment.user.name}
-                      </span>
-
-                      {comment.user.id === authorId && (
-                        <span className="flex items-center gap-1 rounded-xl px-3 py-1 text-sm text-zinc-600 bg-slate-200 font-semibold shadow-sm">
-                          Author
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-zinc-700">
+                          {comment.user.name}
                         </span>
-                      )}
 
-                      {comment.user.votes.length > 0 && (
-                        <span
-                          className={`flex items-center gap-1 rounded-xl px-3 py-1 text-sm font-semibold shadow-sm
+                        {comment.user.id === authorId && (
+                          <span className="flex items-center gap-1 rounded-xl px-3 py-1 text-sm text-zinc-600 bg-slate-200 font-semibold shadow-sm">
+                            Author
+                          </span>
+                        )}
+
+                        {comment.user.votes.length > 0 && (
+                          <span
+                            className={`flex items-center gap-1 rounded-xl px-3 py-1 text-sm font-semibold shadow-sm
                           ${
                             comment.user.votes[0].type === "BUY"
                               ? "bg-green-200 text-green-800"
@@ -93,63 +104,68 @@ export function CommentsDrawer({
                               ? "bg-red-200 text-red-800"
                               : "bg-zinc-200 text-zinc-600"
                           }`}
-                        >
-                          {comment.user.votes[0].type === "BUY" &&
-                            "💸 Buy This"}
-                          {comment.user.votes[0].type === "SKIP" &&
-                            "👋 Bye This"}
-                        </span>
+                          >
+                            {comment.user.votes[0].type === "BUY" &&
+                              "💸 Voted Buy"}
+                            {comment.user.votes[0].type === "SKIP" &&
+                              "👎 Voted Bye"}
+                          </span>
+                        )}
+                      </div>
+
+                      {session?.user?.id === comment.user.id && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="p-1">
+                              <EllipsisVertical className="w-4 h-4 text-zinc-600" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <form action={deleteCommentAction}>
+                              <input
+                                type="hidden"
+                                name="commentId"
+                                value={comment.id}
+                              />
+                              <input
+                                type="hidden"
+                                name="postId"
+                                value={postId}
+                              />
+                              <button
+                                type="submit"
+                                className="w-full text-left px-2 py-1.5 text-sm text-red-600 hover:bg-red-100 focus:bg-red-100 flex items-center"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                              </button>
+                            </form>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       )}
                     </div>
 
-                    {session?.user?.id === comment.user.id && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="p-1">
-                            <Ellipsis className="w-4 h-4 text-zinc-600" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <form action={deleteCommentAction}>
-                            <input
-                              type="hidden"
-                              name="commentId"
-                              value={comment.id}
-                            />
-                            <input type="hidden" name="postId" value={postId} />
-                            <button
-                              type="submit"
-                              className="w-full text-left px-2 py-1.5 text-sm text-red-600 hover:bg-red-100 focus:bg-red-100 flex items-center"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </button>
-                          </form>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                  </div>
+                    <div className=" py-1 text-sm w-fit">{comment.comment}</div>
 
-                  <div className=" py-1 text-sm w-fit">{comment.comment}</div>
-
-                  <div className="flex justify-end items-center gap-1 text-xs text-zinc-500 mt-2 px-1">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>
-                      {formatDistanceToNow(new Date(comment.createdAt), {
-                        addSuffix: true,
-                      }).replace(/^about /, "")}
-                    </span>
+                    <div className="flex justify-end items-center gap-1 text-xs text-zinc-500 mt-2 px-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>
+                        {formatDistanceToNow(new Date(comment.createdAt), {
+                          addSuffix: true,
+                        }).replace(/^about /, "")}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                <Separator className="mt-3" />
               </div>
-              <Separator className="mt-3" />
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <DrawerFooter>
           <Separator className="mb-2" />
-          <form action={createCommentAction} className="grid w-full gap-2">
+          <form action={action} className="grid w-full gap-2">
             <input type="hidden" name="postId" value={postId} />
 
             <div className="flex justify-center gap-2">
@@ -166,6 +182,7 @@ export function CommentsDrawer({
                   name="comment"
                   placeholder="Add a comment..."
                   rows={1}
+                  disabled={pending}
                   className="flex-1 text-sm bg-transparent outline-none resize-none h-6"
                   onInput={(e) => {
                     e.target.style.height = "auto";
@@ -174,6 +191,7 @@ export function CommentsDrawer({
                 />
                 <Button
                   type="submit"
+                  disabled={pending}
                   className="ml-2 p-2 w-8 h-8 aspect-square rounded-full flex items-center justify-center shadow-sm"
                 >
                   <Send className="w-4 h-4" />

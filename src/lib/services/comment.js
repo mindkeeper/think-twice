@@ -33,10 +33,11 @@ export async function createComment({ userId, postId, comment }) {
     },
     include: {
       user: {
-        select: {
-          id: true,
-          name: true,
-          avatarUrl: true,
+        include: {
+          votes: {
+            where: { postId },
+            select: { type: true },
+          },
         },
       },
     },

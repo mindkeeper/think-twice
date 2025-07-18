@@ -1,10 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
-export const TabSwitcher = () => {
-  const [activeTab, setActiveTab] = useState("wishlist");
-
+export const TabSwitcher = ({ activeTab, setActiveTab }) => {
   return (
     <div className="relative mt-7">
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-zinc-300" />
