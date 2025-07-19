@@ -5,7 +5,7 @@ export default function Loading() {
         <div className="absolute -bottom-12 left-6 w-24 h-24 rounded-full bg-gray-300 border-4 border-white"></div>
       </div>
 
-      <div className="px-5 mt-2">
+      <div className="px-5 mt-14">
         <div className="h-7 w-32 bg-gray-200 rounded-md"></div>
         <div className="flex items-center gap-1 py-2">
           <div className="h-4 w-4 bg-gray-200 rounded"></div>
