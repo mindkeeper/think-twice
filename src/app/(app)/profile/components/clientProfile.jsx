@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { TabSwitcher } from "@/components/ui/tabSwitcher";
-import { CalendarClock, WandSparkles } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 import EditProfileModal from "./editProfileModal";
 import WishlistForm from "./wishlistForm";
 import BookmarkForm from "./bookmarkForm";

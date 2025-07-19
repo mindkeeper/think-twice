@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { FontBrand } from "@/utils/font";
 
 const INITIAL_STATE = {
   error: "",
@@ -30,8 +31,15 @@ export default function EditProfileForm({ user, closeDialog }) {
   return (
     <form action={action} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input type="text" name="name" defaultValue={user?.name} />
+        <Label htmlFor="name" className={`text-lg ${FontBrand.className}`}>
+          Name
+        </Label>
+        <Input
+          type="text"
+          name="name"
+          className=" bg-gray-200 rounded-full  py-5"
+          defaultValue={user?.name}
+        />
         {state?.error && <p className="text-red-500 text-sm">{state.error}</p>}
       </div>
       <Input type="hidden" name="id" defaultValue={user?.id} />

@@ -1,6 +1,5 @@
 "use client";
 import { FontBrand } from "@/utils/font";
-import { cn } from "@/lib/utils";
 
 export const TabSwitcher = ({ activeTab, setActiveTab }) => {
   return (

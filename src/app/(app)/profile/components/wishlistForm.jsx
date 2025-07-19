@@ -1,5 +1,6 @@
 "use client";
 
+import { Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -57,8 +58,15 @@ export default function WishlistForm({ posts }) {
               </div>
             </div>
 
-            <div className="inline-flex items-center mt-3 ml-2 mb-4 text-gray-600 border-2 border-gray-200 text-sm font-semibold px-2 py-1 rounded-full">
-              💬 {post.comments?.length ?? 0}
+            <div className="flex items-center gap-2 text-gray-600 px-2 ml-1 mt-2 ">
+              💬 {post.comments?.length ?? 0} comments
+            </div>
+
+            <div className="flex items-center text-sm gap-2 text-gray-600 border-2 bg-gray-200 rounded-full px-2 my-2 mb-4 ml-1 shadow-md">
+              🏷️
+              <span className="gap-x-2 font-semibold">
+                {post.category?.name}
+              </span>
             </div>
           </Link>
         );

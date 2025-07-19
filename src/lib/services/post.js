@@ -13,6 +13,11 @@ export async function getUserPostList(userId) {
       votes: {
         select: { type: true },
       },
+      category: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
   });

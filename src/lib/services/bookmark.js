@@ -11,6 +11,11 @@ export async function getUserBookmarkedPost(userId) {
           id: true,
           title: true,
           imageUrl: true,
+          category: {
+            select: {
+              name: true,
+            },
+          },
           votes: {
             select: {
               type: true,
