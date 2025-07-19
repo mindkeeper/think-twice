@@ -8,17 +8,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FontBrand } from "@/utils/font";
+import { cn } from "@/lib/utils";
 
-import CategorySelect from "./CategorySelect";
+// import CategorySelect from "./CategorySelect";
+import CategoryDrawer from "./CategoryDrawer";
 import InputProductImage from "./InputProductImage";
 import { createPost } from "../actions";
-
-/**
- * Komponen formulir untuk membuat postingan baru.
- * Menggunakan useActionState untuk mengelola state formulir dan feedback.
- * @param {Object} props - Componen props.
- * @param {Category[]} props.categories - Daftar kategori untuk dipilih.
- */
 
 export function CreatePostForm({ categories }) {
   const router = useRouter();
@@ -48,17 +44,18 @@ export function CreatePostForm({ categories }) {
   return (
     <form
       action={formAction}
-      className="card flex flex-col shadow-md border rounded-md w-full mx-auto p-4 gap-4"
+      className="flex flex-col w-full mx-auto p-4 gap-4"
     >
       {/* Input Product Image */}
       <div className="space-y-2">
-        <Label htmlFor="imageFile">Product Image</Label>
         <InputProductImage file={file} setFile={setFile} disabled={pending} />
       </div>
 
       {/* Input Product Name */}
       <div className="space-y-2">
-        <Label htmlFor="title">Product Name</Label>
+        <Label htmlFor="title" className={cn("text-sm", FontBrand.className)}>
+          Product Name
+        </Label>
         <Input
           id="title"
           name="title"
@@ -68,12 +65,15 @@ export function CreatePostForm({ categories }) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           disabled={pending}
+          className="rounded-2xl h-12 bg-slate-50"
         />
       </div>
 
       {/* Input Price */}
       <div className="space-y-2">
-        <Label htmlFor="price">Price (IDR)</Label>
+        <Label htmlFor="price" className={cn("text-sm", FontBrand.className)}>
+          Price (IDR)
+        </Label>
         <Input
           id="price"
           name="price"
@@ -85,11 +85,19 @@ export function CreatePostForm({ categories }) {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           disabled={pending}
+          className="rounded-2xl h-12 bg-slate-50"
         />
       </div>
 
-      {/* Category Select*/}
+      {/* Category Select
       <CategorySelect
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        disabled={pending}
+      /> */}
+
+      <CategoryDrawer
         categories={categories}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
@@ -98,21 +106,32 @@ export function CreatePostForm({ categories }) {
 
       {/* Input Reason to Buy */}
       <div className="space-y-2">
-        <Label htmlFor="buyReason">Reason to Buy</Label>
+        <Label
+          htmlFor="buyReason"
+          className={cn("text-sm", FontBrand.className)}
+        >
+          Reason to Buy
+        </Label>
         <Textarea
           id="buyReason"
           name="buyReason"
           placeholder="Why consider buying this? (optional)"
-          rows={3}
+          rows={4}
           value={buyReason}
           onChange={(e) => setBuyReason(e.target.value)}
           disabled={pending}
+          className="rounded-2xl bg-slate-50"
         />
       </div>
 
       {/* Input Reason to Skip */}
       <div className="space-y-2">
-        <Label htmlFor="skipReason">Reason to Skip</Label>
+        <Label
+          htmlFor="skipReason"
+          className={cn("text-sm", FontBrand.className)}
+        >
+          Reason to Skip
+        </Label>
         <Textarea
           id="skipReason"
           name="skipReason"
@@ -121,11 +140,19 @@ export function CreatePostForm({ categories }) {
           value={skipReason}
           onChange={(e) => setSkipReason(e.target.value)}
           disabled={pending}
+          className="rounded-2xl bg-slate-50"
         />
       </div>
 
       {/* Submit Button */}
-      <Button type="submit" disabled={pending} className="w-full">
+      <Button
+        type="submit"
+        disabled={pending}
+        className={cn(
+          "w-full h-12 text-lg bg-gradient-to-b from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 transition-colors duration-300",
+          FontBrand.className
+        )}
+      >
         {pending ? "Creating Post..." : "Create Post"}
       </Button>
     </form>
