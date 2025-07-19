@@ -47,6 +47,6 @@ export async function editProfileAction(_prevState, formData) {
     return { error: "Failed to update profile." };
   }
 
-  revalidatePath(`/profile/${id}`);
+  revalidatePath(`/profile`);
   return { success: true };
 }
