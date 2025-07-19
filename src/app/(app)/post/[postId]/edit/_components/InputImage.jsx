@@ -22,7 +22,7 @@ export default function InputImage({ defaultImage = "" }) {
           alt="Preview"
           width={300}
           height={300}
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-[480px] object-cover rounded-lg"
         />
       ) : (
         <UploadIcon className="h-6 w-6" />

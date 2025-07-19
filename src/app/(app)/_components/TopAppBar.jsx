@@ -83,6 +83,16 @@ const TopAppBar = () => {
   };
 
   const getCurrentConfig = () => {
+    if (pathname.startsWith("/post/") && pathname.endsWith("/edit")) {
+      return {
+        title: "Edit Post",
+        leftIcon: "back",
+        rightIcon: null,
+        showLogo: false,
+        bgColor: "bg-white",
+        textColor: "text-black",
+      };
+    }
     if (pathname.startsWith("/post/") && pathname.length > "/post/".length) {
       return pageConfigs["/post"];
     }
