@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import EditProfileForm from "./editProfileForm";
 import UploadAvatarForm from "./uploadAvatarForm";
-import { FontBrand } from "@/utils/font";
 
 export default function EditProfileModal({ user, userId }) {
   const [open, setOpen] = useState(false);
@@ -28,7 +27,7 @@ export default function EditProfileModal({ user, userId }) {
       </DialogTrigger>
 
       <DialogContent className="max-w-md space-y-6">
-        <DialogTitle className={`text-xl ${FontBrand.className}`}>
+        <DialogTitle className="text-lg font-semibold">
           Edit Profile
         </DialogTitle>
 
