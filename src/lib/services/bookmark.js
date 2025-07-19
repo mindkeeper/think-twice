@@ -11,10 +11,14 @@ export async function getUserBookmarkedPost(userId) {
           id: true,
           title: true,
           imageUrl: true,
-          _count: {
+          votes: {
             select: {
-              votes: true,
-              comments: true,
+              type: true,
+            },
+          },
+          comments: {
+            select: {
+              id: true,
             },
           },
         },
@@ -22,6 +26,7 @@ export async function getUserBookmarkedPost(userId) {
     },
     orderBy: { createdAt: "desc" },
   });
+
   return bookmark.map((b) => b.post);
 }
 
