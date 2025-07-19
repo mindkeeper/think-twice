@@ -1,14 +1,20 @@
-import BackButton from "@/components/BackButton";
 import { getPostById } from "@/lib/services/post";
 import { getSession } from "@/lib/services/session";
 
+import { getCategories } from "@/lib/services/categories";
 import { notFound, redirect } from "next/navigation";
 import { EditPostForm } from "./_components/EditPostForm";
-import { getCategories } from "@/lib/services/categories";
+
+export const metadata = {
+  title: "Edit Post",
+  description: "Edit an existing post with updated details and categories.",
+};
 
 export default async function Page({ params }) {
-  const { postId } = await params;
   const session = await getSession();
+  if (!session) redirect("/sign-in");
+
+  const { postId } = await params;
   const user = session?.user;
   const post = await getPostById(postId);
 

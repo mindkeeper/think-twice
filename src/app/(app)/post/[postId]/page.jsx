@@ -36,6 +36,25 @@ import { DeletePostButton } from "./_components/deletePostButton";
 import { VotingForm } from "./_components/VotingForm";
 import { BookmarkPostButton } from "./bookmark/_components/bookmarkPostButton";
 import CommentsDrawer from "./_components/commentsDrawerWrapper";
+import { prisma } from "@/utils/prisma";
+
+export async function generateMetadata(
+  { params, searchParams: _searchParams },
+  _parent
+) {
+  const { postId } = await params;
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      title: true,
+    },
+  });
+  return {
+    title: `${post.title || "Post"} - Think Twice`,
+    description:
+      "View details of a specific post, including voting and comments.",
+  };
+}
 
 export default async function UserPost({ params }) {
   const { postId } = await params;

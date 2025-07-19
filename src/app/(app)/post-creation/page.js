@@ -3,6 +3,10 @@ import { getCategories } from "@/lib/services/categories";
 import { getSession } from "@/lib/services/session";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Create New Post",
+};
+
 export default async function PostCreationPage() {
   const session = await getSession();
   if (!session) redirect("/sign-in");

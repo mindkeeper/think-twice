@@ -4,6 +4,17 @@ import { redirect } from "next/navigation";
 import ClientProfile from "./components/clientProfile";
 import { getUserBookmarkedPost } from "@/lib/services/bookmark";
 
+export async function generateMetadata(
+  { params: _params, searchParams: _searchParams },
+  _parent
+) {
+  const session = await getSession();
+  return {
+    title: `${session?.user.name || "Profile"} - Think Twice`,
+    description: "User profile page for managing posts and bookmarks.",
+  };
+}
+
 export default async function ProfilePage() {
   const session = await getSession();
   if (!session) redirect("/sign-in");
