@@ -146,10 +146,7 @@ export default async function UserPost({ params }) {
         </div>
 
         <div className="w-full grid grid-cols-2 p-4 gap-4">
-          <div className="text-wrap text-lg font-bold leading-tight">
-            {post.title}
-          </div>
-          <div className="flex gap-x-2 justify-end">
+          <div className="flex gap-x-2 justify-start">
             <div className="inline-flex h-fit items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold space-x-2 px-2 py-1 rounded-full">
               <div className="inline-flex items-center font-bold text-green-700">
                 💸 {voteData?.buyPercentage}%
@@ -163,14 +160,17 @@ export default async function UserPost({ params }) {
               💬 {post.comments.length}
             </div>
           </div>
-          <p className="text-lg font-medium text-neutral-900 mb-2">
-            <span className="text-lg">💰</span> {formatPrice(post.price)} IDR
-          </p>
           <div className="flex items-center justify-end">
             <p className="text-neutral-600 border-1 border-neutral-100 text-sm font-semibold px-2 py-0.5 mb-3 rounded-full">
               {post.category?.name}
             </p>
           </div>
+          <div className="col-span-2 text-wrap text-lg font-bold leading-tight">
+            {post.title}
+          </div>
+          <p className="text-lg font-medium text-neutral-900 mb-2">
+            <span className="text-lg">💰</span> {formatPrice(post.price)} IDR
+          </p>
         </div>
 
         <div className="bg-gray-100 p-4 flex flex-col gap-4">

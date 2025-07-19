@@ -5,7 +5,7 @@ export default function Loading() {
         <div className="absolute -bottom-12 left-6 w-24 h-24 rounded-full bg-gray-300 border-4 border-white"></div>
       </div>
 
-      <div className="px-5 mt-16">
+      <div className="px-5 mt-2">
         <div className="h-7 w-32 bg-gray-200 rounded-md"></div>
         <div className="flex items-center gap-1 py-2">
           <div className="h-4 w-4 bg-gray-200 rounded"></div>
@@ -17,9 +17,8 @@ export default function Loading() {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center py-2">
-        <div className="h-6 w-20 bg-gray-200 rounded-md py-2 mt-2"></div>
-        <div className="h-px w-full bg-gray-200 mt-2"></div>
+      <div className="px-4 mt-4">
+        <div className="h-10 w-full bg-gray-200 rounded-md"></div>
       </div>
 
       <div className="grid grid-cols-2 max-w-xl mx-auto gap-4 mt-6 mb-5">

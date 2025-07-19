@@ -11,19 +11,19 @@ export default function Loading() {
         </div>
 
         <div className="flex justify-center">
-          <div className="w-full h-[480px] bg-gray-200"></div>
+          <div className="w-full aspect-square bg-gray-200"></div>
         </div>
 
         <div className="w-full grid grid-cols-2 p-4 gap-4">
-          <div className="h-8 w-3/4 bg-gray-200 rounded-md"></div>
-          <div className="flex gap-x-2 justify-end">
-            <div className="h-8 w-24 bg-gray-200 rounded-full"></div>
-            <div className="h-8 w-12 bg-gray-200 rounded-full"></div>
+          <div className="flex gap-x-2 justify-start">
+            <div className="inline-flex h-8 w-24 bg-gray-200 rounded-full"></div>
+            <div className="inline-flex h-8 w-12 bg-gray-200 rounded-full"></div>
           </div>
-          <div className="h-6 w-1/2 bg-gray-200 rounded-md"></div>
           <div className="flex items-center justify-end">
-            <div className="h-6 w-20 bg-gray-200 rounded-full"></div>
+            <div className="inline-flex h-8 w-20 bg-gray-200 rounded-full"></div>
           </div>
+          <div className="col-span-2 w-1/2 h-7 bg-gray-200 rounded-md"></div>
+          <div className="h-7 w-1/2 bg-gray-200 rounded-md"></div>
         </div>
 
         <div className="bg-gray-100 p-4 flex flex-col gap-4">
