@@ -1,22 +1,27 @@
 import { prisma } from "@/utils/prisma";
 
 export async function getUserPostList(userId) {
-  const post = await prisma.post.findMany({
+  const posts = await prisma.post.findMany({
     where: { userId },
     select: {
       id: true,
       imageUrl: true,
       title: true,
-      _count: {
+      comments: {
+        select: { id: true },
+      },
+      votes: {
+        select: { type: true },
+      },
+      category: {
         select: {
-          votes: true,
-          comments: true,
+          name: true,
         },
       },
     },
     orderBy: { createdAt: "desc" },
   });
-  return post;
+  return posts;
 }
 
 export async function getPostById(postId) {
