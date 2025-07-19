@@ -53,7 +53,9 @@ export default function ClientProfile({
       <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="px-4">
-        {activeTab === "wishlist" && <WishlistForm posts={posts} />}
+        {activeTab === "wishlist" && (
+          <WishlistForm posts={posts} isOwner={true} />
+        )}
         {activeTab === "bookmark" && <BookmarkForm posts={bookmarkedPosts} />}
       </div>
     </main>

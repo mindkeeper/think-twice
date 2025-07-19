@@ -9,9 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import EditProfileForm from "./editProfileForm";
-import UploadAvatarForm from "./uploadAvatarForm";
+import { FontBrand } from "@/utils/font";
 
-export default function EditProfileModal({ user, userId }) {
+export default function EditProfileModal({ user }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -26,12 +26,11 @@ export default function EditProfileModal({ user, userId }) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-md space-y-6">
-        <DialogTitle className="text-lg font-semibold">
+      <DialogContent className="max-w-md space-y-6 py-6">
+        <DialogTitle className={`${FontBrand.className} text-2xl`}>
           Edit Profile
         </DialogTitle>
 
-        <UploadAvatarForm userId={userId} closeDialog={() => setOpen(false)} />
         <EditProfileForm user={user} closeDialog={() => setOpen(false)} />
       </DialogContent>
     </Dialog>

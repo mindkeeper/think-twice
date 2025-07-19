@@ -13,12 +13,12 @@ export default function InputAvatar({ file, setFile }) {
   }, [file]);
 
   return (
-    <div className="relative grid w-24 h-24 border-dashed border-2 border-gray-200 rounded-lg place-items-center text-gray-500 overflow-hidden">
+    <div className="relative aspect-square w-32 border-dashed border-3 border-gray-200 rounded-full overflow-hidden flex items-center justify-center text-gray-500">
       {preview ? (
         <img
           src={preview}
           alt="Preview"
-          className="w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover rounded-full"
         />
       ) : (
         <UploadIcon className="h-6 w-6" />

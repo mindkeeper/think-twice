@@ -1,10 +1,36 @@
 "use client";
 
-import { Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FontBrand } from "@/utils/font";
+import { cn } from "@/lib/utils";
 
-export default function WishlistForm({ posts }) {
+export default function WishlistForm({ posts, isOwner = false }) {
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center gap-2 py-4">
+        <h2 className={`mt-8 text-lg ${FontBrand.className}`}>
+          No wishlist yet
+        </h2>
+
+        {isOwner && (
+          <>
+            <p className="text-zinc-600">Create a new post to add a wishlist</p>
+            <Link
+              href="/post-creation"
+              className={cn(
+                "w-[60%] h-12 text-lg text-white bg-gradient-to-b from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 rounded-lg transition-colors duration-300 flex items-center justify-center",
+                FontBrand.className
+              )}
+            >
+              Create New Post
+            </Link>
+          </>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-2 max-w-xl mx-auto gap-4 mt-10 mb-5">
       {posts.map((post) => {

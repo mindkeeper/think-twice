@@ -2,8 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { FontBrand } from "@/utils/font";
 
 export default function BookmarkForm({ posts }) {
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center gap-2 py-4">
+        <h2 className={`mt-8 text-lg ${FontBrand.className}`}>
+          No bookmark yet
+        </h2>
+        <p className="text-zinc-600">
+          Just a little empty right now. That’s okay.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-2 max-w-xl mx-auto gap-4 mt-10 mb-5">
       {posts.map((post) => {
