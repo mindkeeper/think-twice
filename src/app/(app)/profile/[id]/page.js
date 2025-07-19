@@ -28,7 +28,7 @@ export default async function PublicProfile({ params }) {
         </div>
       </div>
 
-      <div className="px-5 mt-15">
+      <div className="px-5 mt-16">
         <h2 className="font-bold text-lg">{user.name}</h2>
 
         <div className="flex items-center gap-1 py-2 text-xs text-zinc-500">
