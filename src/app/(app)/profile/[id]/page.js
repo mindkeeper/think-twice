@@ -1,10 +1,18 @@
-import Image from "next/image";
-import { CalendarClock } from "lucide-react";
-import WishlistForm from "../components/wishlistForm";
 import { getPostCountByUserId, getUserPostList } from "@/lib/services/post";
 import { getUserById } from "@/lib/services/user";
-import { Separator } from "@/components/ui/separator";
 import { FontBrand } from "@/utils/font";
+import { CalendarClock } from "lucide-react";
+import Image from "next/image";
+import WishlistForm from "../components/wishlistForm";
+
+export async function generateMetadata({ params }, _parent) {
+  const { id } = await params;
+  const user = await getUserById(id);
+  return {
+    title: `${user.name || "Profile"}`,
+    description: "User profile page for managing posts and bookmarks.",
+  };
+}
 
 export default async function PublicProfile({ params }) {
   const { id } = await params;
