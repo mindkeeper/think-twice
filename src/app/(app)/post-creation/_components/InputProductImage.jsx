@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import { FontBrand } from "@/utils/font";
 import { cn } from "@/lib/utils";
@@ -9,15 +10,31 @@ import { Trash2 } from "lucide-react";
 
 export default function InputProductImage({ file, setFile, disabled }) {
   const [preview, setPreview] = useState(null);
+  const [imageAspectRatio, setImageAspectRatio] = useState(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (!file) {
       setPreview(null);
+      setImageAspectRatio(null);
       return;
     }
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
+
+    // Load image to get dimensions
+    const img = new window.Image();
+    img.onload = () => {
+      const aspectRatio = img.width / img.height;
+      const maxAspectRatio = 4 / 5; // 0.8
+
+      // If image is more portrait than 4:5, cap it at 4:5
+      const finalAspectRatio =
+        aspectRatio < maxAspectRatio ? maxAspectRatio : aspectRatio;
+      setImageAspectRatio(finalAspectRatio);
+    };
+    img.src = objectUrl;
+
     return () => URL.revokeObjectURL(objectUrl);
   }, [file]);
 
@@ -29,14 +46,15 @@ export default function InputProductImage({ file, setFile, disabled }) {
   };
 
   return (
-    <div className="relative w-full aspect-auto border-dashed border-2 border-gray-200 shadow-xs rounded-2xl">
+    <div className="relative w-full min-h-[200px] border-dashed border-2 border-gray-200 shadow-xs rounded-2xl">
       <div className="relative grid w-full h-full place-items-center rounded-2xl overflow-hidden transition-colors duration-200">
-        {preview ? (
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-full max-h-[w] object-cover rounded-2xl"
-          />
+        {preview && imageAspectRatio ? (
+          <div
+            className="w-full relative"
+            style={{ aspectRatio: imageAspectRatio }}
+          >
+            <Image src={preview} alt="Preview" fill className="object-cover" />
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-4 p-8">
             <div className="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center">
@@ -63,7 +81,7 @@ export default function InputProductImage({ file, setFile, disabled }) {
           onChange={(e) => setFile(e.target.files?.[0] || null)}
         />
       </div>
-      {preview && (
+      {preview && imageAspectRatio && (
         <button
           type="button"
           onClick={handleRemoveImage}
