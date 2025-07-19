@@ -10,7 +10,7 @@ export async function generateMetadata(
 ) {
   const session = await getSession();
   return {
-    title: `${session?.user.name || "Profile"} - Think Twice`,
+    title: `${session?.user.name || "Profile"}`,
     description: "User profile page for managing posts and bookmarks.",
   };
 }

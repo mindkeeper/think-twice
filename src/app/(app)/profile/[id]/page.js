@@ -9,7 +9,7 @@ export async function generateMetadata({ params }, _parent) {
   const { id } = await params;
   const user = await getUserById(id);
   return {
-    title: `${user.name || "Profile"} - Think Twice`,
+    title: `${user.name || "Profile"}`,
     description: "User profile page for managing posts and bookmarks.",
   };
 }

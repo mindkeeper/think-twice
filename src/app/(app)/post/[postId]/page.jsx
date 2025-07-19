@@ -50,7 +50,7 @@ export async function generateMetadata(
     },
   });
   return {
-    title: `${post.title || "Post"} - Think Twice`,
+    title: `${post.title || "Post"}`,
     description:
       "View details of a specific post, including voting and comments.",
   };
