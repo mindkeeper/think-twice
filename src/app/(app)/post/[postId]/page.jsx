@@ -150,7 +150,7 @@ export default async function UserPost({ params }) {
             {post.title}
           </div>
           <div className="flex gap-x-2 justify-end">
-            <div className="inline-flex items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold space-x-2 px-2 py-1 rounded-full">
+            <div className="inline-flex h-fit items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold space-x-2 px-2 py-1 rounded-full">
               <div className="inline-flex items-center font-bold text-green-700">
                 💸 {voteData?.buyPercentage}%
               </div>
@@ -159,7 +159,7 @@ export default async function UserPost({ params }) {
                 👎 {voteData?.skipPercentage}%
               </div>
             </div>
-            <div className="inline-flex items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold px-2 py-1 rounded-full">
+            <div className="inline-flex h-fit items-center text-gray-600 border-1 border-gray-100 text-sm font-semibold px-2 py-1 rounded-full">
               💬 {post.comments.length}
             </div>
           </div>
