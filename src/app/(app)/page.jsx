@@ -74,6 +74,9 @@ export default async function HomePage() {
           posts.map((singlePost) => (
             <PostCard key={singlePost.id} post={singlePost} />
           ))}
+        <div className="text-center text-gray-400 mt-8 my-4">
+          <p>You've reached the end of the posts</p>
+        </div>
       </section>
     </div>
   );
