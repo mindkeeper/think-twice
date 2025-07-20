@@ -44,8 +44,12 @@ export async function votePost(_prevState, formData) {
         where: { postId, type: "BUY" },
       }),
     ]);
-    const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
-    const skipPercentage = 100 - buyPercentage;
+    let buyPercentage = 0;
+    let skipPercentage = 0;
+    if (totalVotes > 0) {
+      buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+      skipPercentage = 100 - buyPercentage;
+    }
 
     revalidatePath("/post");
     return {
@@ -81,8 +85,12 @@ export async function getUserVoteData(postId, userId) {
     prisma.vote.count({ where: { postId, type: "BUY" } }),
   ]);
 
-  const buyPercentage = Math.round((buyVotes / totalVotes) * 100);
-  const skipPercentage = 100 - buyPercentage;
+  let buyPercentage = 0;
+  let skipPercentage = 0;
+  if (totalVotes > 0) {
+    buyPercentage = Math.round((buyVotes / totalVotes) * 100);
+    skipPercentage = 100 - buyPercentage;
+  }
 
   return {
     success: !!existingVote,
